@@ -6,27 +6,17 @@ import java.util.List;
 
 public interface AvailablePetDao {
 
-    AvailablePet getAvailablePetByBreed(String breed);
+    List<AvailablePet> getAvailablePetsByBreed(String breed);
 
-    AvailablePet getAvailablePetByColor(String Color);
+    List<AvailablePet> getAvailablePetsByColor(String Color);
 
-    AvailablePet getAvailablePetByAge(Integer age);
+    List<AvailablePet> getAvailablePetsByAge(Integer age);
 
-    AvailablePet getAvailablePetByType(String type);
+    List<AvailablePet> getAvailablePetsByType(String type);
 
-    AvailablePet getAvailablePetByAdoptionStatus(String adoptionStatus);
+    List<AvailablePet> getAvailablePetsByAdoptionStatus(String adoptionStatus);
 
-    AvailablePet getAvailablePetByBreed(String breed);
-
-    AvailablePet getAvailablePetByColor(String color);
-
-    AvailablePet getAvailablePetByAge(Integer age);
-
-    AvailablePet getAvailablePetByType(String type);
-
-    AvailablePet getAvailablePetByAdoptionStatus(String adoptionStatus);
-
-    void addPet(AvailablePet pet);
+    AvailablePet addPet(AvailablePet pet);
 
     void updatePet(AvailablePet pet);
 
