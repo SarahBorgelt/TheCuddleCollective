@@ -85,7 +85,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
         List<AvailablePet> petsByStatus = new ArrayList<>();
         String sql = "SELECT animal_id, animal_type, breed, color, age, name, " +
                 "adoption_status, image_url FROM available_pets" +
-                "where status = ? AND adoption_status = 'available'";
+                "where adoption_status = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, adoptionStatus);
         while(results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
