@@ -10,6 +10,9 @@ export default function MainNav() {
       <div className="nav-link">
         <NavLink to="/">Home</NavLink>
       </div>
+      <div className="nav-link">
+          <NavLink to="/availablePets">Available Pets</NavLink>
+      </div>
       {user ? (
         <>
           <div className="nav-link">

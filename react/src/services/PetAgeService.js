@@ -6,6 +6,6 @@ export default{
     },
 
     getPetsByAge(age){
-        return axios.get(`${age}`);
+        return axios.get(`/availablePets/petAge/${age}`);
     }
 }
