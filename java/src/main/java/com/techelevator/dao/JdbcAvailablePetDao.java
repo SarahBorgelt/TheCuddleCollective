@@ -94,6 +94,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
         return petsByStatus;
     }
 
+    //TODO add pet by id to controller
     @Override
     public AvailablePet getPetById(long petId) {
         AvailablePet petById = null;

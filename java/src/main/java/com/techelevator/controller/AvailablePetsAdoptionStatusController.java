@@ -23,7 +23,7 @@ public class AvailablePetsAdoptionStatusController {
     @GetMapping(path = "{adoptionStatus}")
     public List<AvailablePet> availablePetsByAdoptionStatus(@PathVariable String adoptionStatus){
         try{
-            return availablePetDao.getAvailablePetByAdoptionStatus(adoptionStatus);
+            return availablePetDao.getAvailablePetsByAdoptionStatus(adoptionStatus);
         } catch (DaoException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

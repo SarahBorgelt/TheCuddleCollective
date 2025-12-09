@@ -25,7 +25,7 @@ public class AvailablePetsTypeController {
     @GetMapping(path = "{type}")
     public List <AvailablePet> getAvailablePetsByType(@PathVariable String type){
         try{
-            return availablePetDao.getAvailablePetByType(type);
+            return availablePetDao.getAvailablePetsByType(type);
         } catch (DaoException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
