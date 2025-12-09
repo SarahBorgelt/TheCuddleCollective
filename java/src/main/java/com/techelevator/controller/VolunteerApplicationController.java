@@ -26,5 +26,5 @@ public class VolunteerApplicationController {
 
         return applicantDao.submitApplication(applicant);
     }
-
+    
 }
