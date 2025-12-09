@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.exception.DaoException;
 import com.techelevator.model.ShelterVolunteer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -22,10 +23,14 @@ public class JdbcVolunteersDao implements VolunteerDao{
     public List<ShelterVolunteer> getAllVolunteers(){
         List<ShelterVolunteer> shelterVolunteers = new ArrayList<>();
         String sql = "SELECT first_name, last_name, email FROM volunteers";
+        try{
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()){
             ShelterVolunteer shelterVolunteer = mapRowToVolunteer(results);
             shelterVolunteers.add(shelterVolunteer);
+        }}
+        catch (Exception e){
+            throw new DaoException("Cannot retrieve volunteers");
         }
         return shelterVolunteers;
     }

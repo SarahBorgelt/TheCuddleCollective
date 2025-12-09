@@ -22,7 +22,7 @@ public class Applicant {
     }
 
     public Applicant(String firstName, String lastName, String email) {
-        
+
     }
 
     public int getVolunteerApplicationId() {
