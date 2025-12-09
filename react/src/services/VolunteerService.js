@@ -3,7 +3,7 @@ import axios from "axios";
 export default{
 
     getAllVolunteers(){
-        return axios.get("/volunteers");
+        return axios.get("/volunteer/directory");
 },
 
     addNewVolunteer(volunteer_id){
