@@ -20,7 +20,7 @@ public class VolunteerController {
         this.volunteerDao = volunteerDao;
     }
 
-    @GetMapping("/volunteers")
+    @GetMapping("/volunteer/directory")
     public List<ShelterVolunteer> listAllVolunteers(){
         return volunteerDao.getAllVolunteers();
     }
