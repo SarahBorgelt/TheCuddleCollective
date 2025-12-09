@@ -6,13 +6,20 @@ import RegisterView from './views/RegisterView/RegisterView';
 import UserProfileView from './views/UserProfileView/UserProfileView';
 import MainNav from './components/MainNav/MainNav';
 import ProtectedRoute from './components/ProtectedRoute';
+import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
 
 export default function App() {
 
   return (
     <BrowserRouter>
       <div id="app">
-          <MainNav />
+        <header id ="app-header">
+          <Header/>
+        </header>
+          <nav id="main-nav">
+            <MainNav />
+          </nav>
           <main id="main-content">
             <Routes>
               <Route path="/" element={<HomeView />} />
@@ -29,7 +36,11 @@ export default function App() {
               />
             </Routes>
           </main>
+          <footer id = "app-footer">
+            <Footer/>
+          </footer>
       </div>
     </BrowserRouter>
+
   );
 }
