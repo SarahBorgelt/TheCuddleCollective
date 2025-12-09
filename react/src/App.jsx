@@ -9,6 +9,8 @@ import MainNav from './components/MainNav/MainNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
+impo
+
 
 export default function App() {
 
@@ -37,15 +39,15 @@ export default function App() {
                 }
               />
               <Route path="/volunteer/apply" element={
-            <RequireAuth>
+            <ProtectedRoute>
               <VolunteerApplicationForm />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
         <Route path="/volunteer/directory" element={
-            <RequireAuth>
+            <ProtectedRoute>
               <VolunteerDirectory />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
             </Routes>

@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.AvailablePetDao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.AvailablePet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,6 +18,7 @@ public class AvailablePetsAdoptionStatusController {
 
     private final AvailablePetDao availablePetDao;
 
+    @Autowired
     public AvailablePetsAdoptionStatusController(AvailablePetDao availablePetDao) {
         this.availablePetDao = availablePetDao;
     }
