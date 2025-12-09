@@ -7,6 +7,7 @@ public class AvailablePet {
     private String animalColor;
     private Integer animalAge;
     private String animalName;
+    private Integer parentId;
     private String adoptionStatus;
     private String imageUrl;
     private String imageUrl1;
@@ -28,6 +29,14 @@ public class AvailablePet {
         this.imageUrl = imageUrl;
         this.imageUrl1 = imageUrl1;
         this.imageUrl2 = imageUrl2;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     public Long getAnimalId() {
