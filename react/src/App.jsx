@@ -8,6 +8,8 @@ import MainNav from './components/MainNav/MainNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
+import VolunteerApplicationForm from './views/VolunteerApplicationView/VolunteerApplicationView';
+import VolunteerDirectory from './views/VolunteerDirectoryView/VolunteerDirectoryView';
 
 export default function App() {
 
@@ -34,18 +36,8 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/volunteer/apply" element={
-            <RequireAuth>
-              <VolunteerApplicationForm />
-            </RequireAuth>
-          }
-        />
-        <Route path="/volunteer/directory" element={
-            <RequireAuth>
-              <VolunteerDirectory />
-            </RequireAuth>
-          }
-        />
+            <Route path="/volunteer/apply" element={<VolunteerApplicationForm />} />
+        <Route path="/volunteer/directory" element={<VolunteerDirectory />}        />
             </Routes>
           </main>
           <footer id = "app-footer">

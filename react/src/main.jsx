@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import UserProvider from './context/UserProvider.jsx';
 import axios from 'axios';
 
-import App from './App.jsx'
+import App from './App'
 
 /* import fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
