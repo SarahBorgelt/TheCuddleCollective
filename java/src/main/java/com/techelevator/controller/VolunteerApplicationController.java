@@ -20,11 +20,11 @@ public class VolunteerApplicationController {
     }
 
     @PostMapping("volunteer/submit")
-    public Applicant submitApplication(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email){
+    public Applicant submitApplication(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String phoneNumber){
 
-        Applicant applicant = new Applicant(firstName, lastName, email);
+        Applicant applicant = new Applicant(firstName, lastName, email, phoneNumber);
 
         return applicantDao.submitApplication(applicant);
     }
-    
+
 }
