@@ -10,7 +10,7 @@ export default function VolunteerApplicationForm(){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const applicant = {firstName, lastName, email};
+        const applicant = {firstName, lastName, email, phoneNumber};
 
         try{
             await VolunteerService.submitApplication(applicant);
@@ -32,7 +32,21 @@ return(
             <input type="email" placeholder="Email" value={email} name="email" onChange={e => setEmail(e.target.value)}></input><br/>
             <p>Phone Number:</p>
             <input type="text" placeholder="Phone Number" value={phoneNumber} name="phoneNumber" onChange={e => setPhoneNumber(e.target.value)}></input>
+            <p>Location:
+            <label>
+            <input type="radio" value=""></input> Cincinnati
+            </label>
+            <label>
+            <input type="radio"></input> Cleveland
+            </label>
+            <label>
+                <input type="radio"></input> Colombus
+            </label>
+            <label>
+                <input type="radio"></input> Atlanta
+            </label>
             <button type="submit">Submit</button>
+            </p>
     </form>
     </div>
 )

@@ -21,7 +21,7 @@ public class VolunteerApplicationController {
         this.applicantDao = applicantDao;
     }
 
-    @PostMapping("volunteer/submit")
+    @PostMapping("volunteer/apply")
     public Applicant submitApplication(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String phoneNumber){
 
         Applicant applicant = new Applicant(firstName, lastName, email, phoneNumber);
