@@ -10,8 +10,8 @@ export default function Footer() {
 
      return (
           <footer className={styles.footer}>
-               <h1 className = {styles.footerVolunteerAsk}>Are you interested in becoming a volunteer?</h1>
-               <button className={styles.volunteerButton} onClick={navigateToApplication}>Sign Up Now</button>
+               <h1 className = {styles.footerVolunteerAsk}>Interested in volunteering?</h1>
+               <button className={styles.volunteerButton} onClick={navigateToApplication}>Sign Up Now!</button>
                <p className={styles.copyright}>© 2025 Animal Shelter Manager. All rights reserved.</p>
           </footer>
      );
