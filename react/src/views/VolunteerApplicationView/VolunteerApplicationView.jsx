@@ -23,10 +23,11 @@ return(
     <div>
     <h1>Volunteer Application</h1>
         <form onSubmit={handleSubmit}>
+            <p>First Name:</p>
             <input type="text" placeholder="First Name" value={firstName} name="firstName" onChange={e => setFirstName(e.target.value)}></input><br/>
-            
+            <p>Last Name:</p>
             <input type="text" placeholder="Last Name" value={lastName} name="lastName" onChange={e => setLastName(e.target.value)}></input><br/>
-            
+            <p>Email:</p>
             <input type="email" placeholder="Email" value={email} name="email" onChange={e => setEmail(e.target.value)}></input><br/>
             
             <button type="submit">Submit</button>

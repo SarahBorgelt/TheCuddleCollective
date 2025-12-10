@@ -4,7 +4,6 @@ import com.techelevator.dao.AvailablePetDao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.AvailablePet;
 import com.techelevator.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,6 @@ import java.util.List;
 public class AvailablePetsTypeController {
     private final AvailablePetDao availablePetDao;
 
-    @Autowired
     public AvailablePetsTypeController(AvailablePetDao availablePetDao) {
         this.availablePetDao = availablePetDao;
     }

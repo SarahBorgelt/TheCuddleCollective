@@ -2,11 +2,11 @@ import axios from "axios";
 
 export default {
     
-    getAllPetsBreed(){
+      getAllPetsBreed(){
         return axios.get("/availablePets/breed/");
     },
 
     getPetsByBreed(breed){
-        return axios.get(`/availablePets/breed/${breed}`);
+        return axios.get(`/${breed}`);
     }
 }

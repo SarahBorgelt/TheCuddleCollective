@@ -1,7 +1,6 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.AvailablePet;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

@@ -14,7 +14,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
 public class JdbcAvailablePetDao implements AvailablePetDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -27,7 +26,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
     public List<AvailablePet> getAvailablePetsByBreed(String breed) {
         List<AvailablePet> petsByBreed = new ArrayList<>();
         String sql = "SELECT animal_id, animal_type, breed, color, age, name, " +
-                "adoption_status, image_url FROM available_pets " +
+                "adoption_status, image_url FROM available_pets" +
                 "where breed = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, breed);
         while(results.next()) {
@@ -42,7 +41,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
     public List<AvailablePet> getAvailablePetsByColor(String color) {
         List<AvailablePet> petsByColor = new ArrayList<>();
         String sql = "SELECT animal_id, animal_type, breed, color, age, name, " +
-                "adoption_status, image_url FROM available_pets " +
+                "adoption_status, image_url FROM available_pets" +
                 "where color = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, color);
         while(results.next()) {
@@ -56,7 +55,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
     public List<AvailablePet> getAvailablePetsByAge(Integer age) {
         List<AvailablePet> petsByAge = new ArrayList<>();
         String sql = "SELECT animal_id, animal_type, breed, color, age, name, " +
-                "adoption_status, image_url FROM available_pets " +
+                "adoption_status, image_url FROM available_pets" +
                 "where age = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, age);
         while(results.next()) {
@@ -71,7 +70,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
         List<AvailablePet> petsByType = new ArrayList<>();
         String sql = "SELECT animal_id, animal_type, breed, color, age, name, " +
                 "adoption_status, image_url FROM available_pets" +
-                " where type = ? AND adoption_status = 'available'";
+                "where type = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, type);
         while(results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
@@ -86,7 +85,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
         List<AvailablePet> petsByStatus = new ArrayList<>();
         String sql = "SELECT animal_id, animal_type, breed, color, age, name, " +
                 "adoption_status, image_url FROM available_pets" +
-                " where adoption_status = ?";
+                "where adoption_status = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, adoptionStatus);
         while(results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
@@ -115,9 +114,9 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
     public AvailablePet addPet(AvailablePet pet) {
         AvailablePet returnedPet = new AvailablePet();
         String sql = "INSERT INTO available_pets (animal_type, breed, color, age, name, " +
-                " adoption_status, image_url, image_url1, image_url2"+
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" +
-                " RETURNING animal_id";
+                "adoption_status, image_url, image_url1, image_url2"+
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+                "RETURNING animal_id";
         try {
             long newAnimalId = jdbcTemplate.queryForObject(sql,int.class, pet.getAnimalType(), pet.getAnimalBreed(),
                     pet.getAnimalColor(), pet.getAnimalAge(), pet.getAnimalName(), pet.getAdoptionStatus(),
@@ -137,7 +136,7 @@ return returnedPet;
         AvailablePet updatedPet = new AvailablePet();
         String sql = "UPDATE available_pets SET animal_type = ?, breed = ?, color = ?, age = ?," +
                 " name = ?, adoption_status = ?, image_url = ?, image_url1 = ?, image_url2 = ?," +
-                " WHERE park_id = ?;";
+                "WHERE park_id = ?;";
         try{
             int numberOfRows = jdbcTemplate.update(sql, pet.getAnimalType(), pet.getAnimalBreed(),
                     pet.getAnimalColor(), pet.getAnimalAge(), pet.getAnimalName(), pet.getAdoptionStatus(),

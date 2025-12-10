@@ -2,9 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Applicant;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
-@Component
 public class JdbcApplicantDao implements ApplicantDao {
     private final JdbcTemplate jdbcTemplate;
 

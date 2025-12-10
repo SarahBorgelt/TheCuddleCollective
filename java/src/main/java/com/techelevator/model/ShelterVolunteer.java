@@ -11,6 +11,20 @@ public class ShelterVolunteer {
     private String lastName;
     @NotBlank
     private String email;
+    @NotBlank
+    private String phoneNumber;
+
+    public ShelterVolunteer(){
+
+    }
+
+    public ShelterVolunteer(String volunteerId, String firstName, String lastName, String email, String phoneNumber){
+        this.volunteerId = volunteerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getVolunteerId() {
         return volunteerId;
