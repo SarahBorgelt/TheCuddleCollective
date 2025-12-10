@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@Component
 public class JdbcAvailablePetDao implements AvailablePetDao {
 
     private final JdbcTemplate jdbcTemplate;

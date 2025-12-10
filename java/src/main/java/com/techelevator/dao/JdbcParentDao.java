@@ -6,7 +6,9 @@ import com.techelevator.model.Parent;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JdbcParentDao {
 
     private final JdbcTemplate jdbcTemplate;
