@@ -5,11 +5,13 @@ import com.techelevator.model.ShelterVolunteer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JdbcVolunteersDao implements VolunteerDao{
 
     private final JdbcTemplate jdbcTemplate;
