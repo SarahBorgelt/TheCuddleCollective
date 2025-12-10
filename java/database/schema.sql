@@ -2,6 +2,8 @@ BEGIN TRANSACTION;
 
 DROP TABLE IF EXISTS users;
 
+--rollback;
+
 CREATE TABLE users (
 	user_id SERIAL,
 	username varchar(50) NOT NULL UNIQUE,
@@ -10,6 +12,18 @@ CREATE TABLE users (
 	first_login boolean NOT NULL DEFAULT TRUE,
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
+
+CREATE TABLE parent(
+    parent_id int UNIQUE,
+    first_name VARCHAR(150) NOT NULL,
+    last_name VARCHAR(150) NOT NULL,
+    phone_number VARCHAR(12) NOT NULL,
+    street_number INT NOT NULL,
+    street_name VARCHAR(150) NOT NULL,
+    city_name VARCHAR(150) NOT NULL,
+    state_abbreviation VARCHAR(2) NOT NULL,
+    CONSTRAINT PK_parent_id PRIMARY KEY (parent_id)
+ );
 
 --Create table to store volunteers
 CREATE TABLE volunteers (
@@ -30,7 +44,7 @@ CREATE TABLE available_pets (
     color VARCHAR(150) NOT NULL,
     age INT NOT NULL,
     name VARCHAR(150) NOT NULL,
-    parent_id VARCHAR(150),
+    parent_id int,
     adoption_status adoption_status_enum NOT NULL,
     image_url VARCHAR(200) NOT NULL UNIQUE,
     image_url1 VARCHAR(200) UNIQUE,
@@ -52,18 +66,6 @@ CREATE TABLE volunteer_applications (
     volunteer_application_status volunteer_application_status_enum NOT NULL
 );
 
---Create table for adopted pets
-CREATE TABLE parent(
-    parent_id SERIAL,
-    first_name VARCHAR(150) NOT NULL,
-    last_name VARCHAR(150) NOT NULL,
-    phone_number VARCHAR(12) NOT NULL,
-    street_number INT NOT NULL,
-    street_name VARCHAR(150) NOT NULL,
-    city_name VARCHAR(150) NOT NULL,
-    state_abbreviation VARCHAR(2) NOT NULL,
-    CONSTRAINT PK_parent_id PRIMARY KEY (parent_id)
- );
+
 
 COMMIT TRANSACTION;
-
