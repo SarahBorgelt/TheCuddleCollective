@@ -5,6 +5,7 @@ export default function VolunteerApplicationForm(){
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,7 +30,8 @@ return(
             <input type="text" placeholder="Last Name" value={lastName} name="lastName" onChange={e => setLastName(e.target.value)}></input><br/>
             <p>Email:</p>
             <input type="email" placeholder="Email" value={email} name="email" onChange={e => setEmail(e.target.value)}></input><br/>
-            
+            <p>Phone Number:</p>
+            <input type="text" placeholder="Phone Number" value={phoneNumber} name="phoneNumber" onChange={e => setPhoneNumber(e.target.value)}></input>
             <button type="submit">Submit</button>
     </form>
     </div>
