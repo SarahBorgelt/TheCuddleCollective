@@ -1,44 +1,68 @@
 import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
+import styles from './MainNav.module.css';
 
 export default function MainNav() {
   const { user } = useContext(UserContext);
 
   return (
-    <nav id="main-nav" className="nav-list">
-      <div className="nav-link">
-        <NavLink to="/">Home</NavLink>
-      </div>
-      <div className="nav-link">
-          <NavLink to="/availablePets">Available Pets</NavLink>
-      </div>
-      {user ? (
-        <>
-          <div className="nav-link">
-            <NavLink to="/addOrUpdatePets">
+    <aside className={styles.sidebar}>
+      <nav className={styles.nav}>
+        
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          Home
+        </NavLink>
+
+        <NavLink
+          to="/availablePets"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          Available Pets
+        </NavLink>
+
+        {user ? (
+          <>
+            <NavLink
+              to="/addOrUpdatePet"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.link
+              }
+            >
               Add or Update Pets
             </NavLink>
-          </div>
-          <div className="nav-link">
-            <NavLink to="/userProfile">
+
+            <NavLink
+              to="/userProfile"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.link
+              }
+            >
               Profile
             </NavLink>
-          </div>
-          
-          <div className="nav-link">
-            <Link to="/logout">
+
+            <Link to="/logout" className={styles.logout}>
               Logout
             </Link>
-          </div>
-        </>
-      ) : (
-        <div className="nav-link">
-          <NavLink to="/login">
+          </>
+        ) : (
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive ? styles.activeLink : styles.link
+            }
+          >
             Login
           </NavLink>
-        </div>
-      )}
-    </nav>
+        )}
+      </nav>
+    </aside>
   );
 }

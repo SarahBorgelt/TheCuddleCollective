@@ -55,7 +55,7 @@ main {
 
 #main-content{
     grid-area: main;
-     background-image: linear-gradient(to bottom, #b2cbf2, #92b6f0);
+    background-image: linear-gradient(to bottom, #b2cbf2, #92b6f0);
 }
 
 #app-footer{

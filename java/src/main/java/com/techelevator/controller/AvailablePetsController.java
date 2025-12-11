@@ -59,14 +59,4 @@ public class AvailablePetsController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    @PermitAll
-    public List<AvailablePet> getAllAdoptedPets(){
-        try{
-            return availablePetDao.getAllAdoptedPets();
-        } catch (DaoException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-    }
 }
