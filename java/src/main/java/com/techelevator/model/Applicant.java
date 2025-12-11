@@ -2,7 +2,7 @@ package com.techelevator.model;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class Applicant {
+public class Applicant extends ShelterApplication {
 //    volunteer_application_id SERIAL PRIMARY KEY,
 //    volunteer_id INT REFERENCES volunteers(volunteer_id),
 //    first_name VARCHAR(100) NOT NULL,

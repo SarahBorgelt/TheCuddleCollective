@@ -14,7 +14,7 @@ public class JdbcApplicantDao implements ApplicantDao {
     }
 
     @Override
-    public ShelterApplication submitApplication(Applicant applicant) {
+    public Applicant submitApplication(Applicant applicant) {
         String sql =
                 "INSERT INTO volunteer_applications (first_name, last_name, email, phone_number, volunteer_application_status) " +
                         "VALUES (?, ?, ?, ?, 'pending') RETURNING volunteer_application_id;";
@@ -28,7 +28,7 @@ public class JdbcApplicantDao implements ApplicantDao {
                 applicant.getPhoneNumber()
         );
 
-        ShelterApplication shelterApp = new ShelterApplication();
+        Applicant shelterApp = new Applicant();
         shelterApp.setApplicationId(newId);
         shelterApp.setFirstName(applicant.getFirstName());
         shelterApp.setLastName(applicant.getLastName());
