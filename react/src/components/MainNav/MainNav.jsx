@@ -16,10 +16,16 @@ export default function MainNav() {
       {user ? (
         <>
           <div className="nav-link">
+            <NavLink to="/addOrUpdatePets">
+              Add or Update Pets
+            </NavLink>
+          </div>
+          <div className="nav-link">
             <NavLink to="/userProfile">
               Profile
             </NavLink>
           </div>
+          
           <div className="nav-link">
             <Link to="/logout">
               Logout
