@@ -11,6 +11,7 @@ import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import VolunteerApplicationForm from './views/VolunteerApplicationView/VolunteerApplicationView';
 import VolunteerDirectory from './views/VolunteerDirectoryView/VolunteerDirectoryView';
+import AddOrUpdatePets from './views/AddOrUpdatePetsView/AddOrUpdatePets';
 
 export default function App() {
 
@@ -30,6 +31,14 @@ export default function App() {
               <Route path="/availablePets" element={<AvailablePets />} />
               <Route path="/logout" element={<LogoutView />} />
               <Route path="/register" element={<RegisterView />} />
+              <Route
+                path="/addOrUpdatePets"
+                element={
+                  <ProtectedRoute>
+                    <AddOrUpdatePets />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/userProfile"
                 element={
