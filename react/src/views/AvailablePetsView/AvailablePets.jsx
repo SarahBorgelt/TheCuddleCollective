@@ -9,8 +9,8 @@ export default function AvailablePets(){
      useEffect(() => {
           async function fetchPets() {
                try{
-                                   const availablePets = await PetService.getAllAvailablePets();
-               setPets(availablePets.data);
+                    const availablePets = await PetService.getAllAvailablePets();
+                    setPets(availablePets.data);
                } catch(error){
                     console.error("Error fetching pets:", error);
                }
