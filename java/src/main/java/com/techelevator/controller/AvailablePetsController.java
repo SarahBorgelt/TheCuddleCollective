@@ -39,12 +39,12 @@ public class AvailablePetsController {
 
     @PreAuthorize("hasRole('user')")
     @PutMapping("/{id}")
-    public void updateAvailablePets(@PathVariable Long id, @RequestBody AvailablePet pet){
+    public AvailablePet updateAvailablePets(@PathVariable Long id, @RequestBody AvailablePet pet){
         try{
             pet.setAnimalId(id);
-            availablePetDao.updatePet(pet);
+            return availablePetDao.updatePet(pet);
         } catch (DaoException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to update pet", e);
         }
     }
 

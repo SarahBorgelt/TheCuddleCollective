@@ -20,7 +20,7 @@ public interface AvailablePetDao {
 
     AvailablePet addPet(AvailablePet pet);
 
-    void updatePet(AvailablePet pet);
+    AvailablePet updatePet(AvailablePet pet);
 
     List<AvailablePet> getAllPets();
 

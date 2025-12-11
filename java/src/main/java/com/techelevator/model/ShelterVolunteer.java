@@ -14,16 +14,23 @@ public class ShelterVolunteer {
     @NotBlank
     private String phoneNumber;
 
+    private boolean firstLogin;
+    private boolean temporaryPasswordActive;
+    private String username;
+    private String passwordHash;
+
     public ShelterVolunteer(){
 
     }
 
-    public ShelterVolunteer(String volunteerId, String firstName, String lastName, String email, String phoneNumber){
+    public ShelterVolunteer(String volunteerId, String firstName, String lastName, String email, String phoneNumber, boolean firstLogin, boolean temporaryPasswordActive){
         this.volunteerId = volunteerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.firstLogin = true;
+        this.temporaryPasswordActive = false;
     }
 
     public String getVolunteerId() {
@@ -34,27 +41,67 @@ public class ShelterVolunteer {
         this.volunteerId = volunteerId;
     }
 
-    public String getFirstName(String firstName) {
-        return this.firstName;
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName(String lastName) {
-        return this.lastName;
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getEmail(String email) {
-        return this.email;
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isTemporaryPasswordActive() {
+        return temporaryPasswordActive;
+    }
+
+    public void setTemporaryPasswordActive(boolean temporaryPasswordActive) {
+        this.temporaryPasswordActive = temporaryPasswordActive;
+    }
+
+    public boolean isFirstLogin() {
+        return firstLogin;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
+    }
+
+    public Object getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash){
+        this.passwordHash = passwordHash;
     }
 }

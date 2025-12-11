@@ -4,9 +4,7 @@ import com.techelevator.dao.VolunteerDao;
 import com.techelevator.model.ShelterVolunteer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +21,20 @@ public class VolunteerController {
     }
 
     @GetMapping("/volunteer/directory")
+    @PreAuthorize("hasRole('user')") //TODO review this, I'm not entirely sure it's correct?
     public List<ShelterVolunteer> listAllVolunteers(){
         return volunteerDao.getAllVolunteers();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/volunteers")
+    public ShelterVolunteer addVolunteer(@RequestBody ShelterVolunteer v) {
+        return volunteerDao.createVolunteer(v);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/volunteers/{id}")
+    public void deleteVolunteer(@PathVariable int id) {
+        volunteerDao.deleteVolunteer(id);
     }
 }

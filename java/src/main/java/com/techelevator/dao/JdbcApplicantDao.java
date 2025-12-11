@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Applicant;
+import com.techelevator.model.ShelterApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,19 +16,25 @@ public class JdbcApplicantDao implements ApplicantDao {
     @Override
     public Applicant submitApplication(Applicant applicant) {
         String sql =
-                "INSERT INTO volunteer_applications (volunteer_id, first_name, last_name, email) " +
-                        "VALUES (?, ?, ?, ?) RETURNING volunteer_application_id;";
+                "INSERT INTO volunteer_applications (first_name, last_name, email, phone_number, volunteer_application_status) " +
+                        "VALUES (?, ?, ?, ?, 'pending') RETURNING volunteer_application_id;";
 
         Integer newId = jdbcTemplate.queryForObject(
                 sql,
                 Integer.class,
-                applicant.getVolunteerId(),
                 applicant.getFirstName(),
                 applicant.getLastName(),
-                applicant.getEmail()
+                applicant.getEmail(),
+                applicant.getPhoneNumber()
         );
 
-        applicant.setVolunteerApplicationId(newId);
-        return applicant;
+        Applicant shelterApp = new Applicant();
+        shelterApp.setApplicationId(newId);
+        shelterApp.setFirstName(applicant.getFirstName());
+        shelterApp.setLastName(applicant.getLastName());
+        shelterApp.setEmail(applicant.getEmail());
+        shelterApp.setPhoneNumber(applicant.getPhoneNumber());
+
+        return shelterApp;
     }
 }

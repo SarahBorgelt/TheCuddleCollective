@@ -30,7 +30,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
                 "adoption_status, image_url, image_url1, image_url2 FROM available_pets " +
                 "where breed = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, breed);
-        while(results.next()) {
+        while (results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
             petsByBreed.add(pet);
         }
@@ -45,7 +45,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
                 "adoption_status, image_url, image_url1, image_url2 FROM available_pets " +
                 "where color = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, color);
-        while(results.next()) {
+        while (results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
             petsByColor.add(pet);
         }
@@ -59,7 +59,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
                 "adoption_status, image_url, image_url1, image_url2 FROM available_pets " +
                 "where age = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, age);
-        while(results.next()) {
+        while (results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
             petsByAge.add(pet);
         }
@@ -73,7 +73,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
                 "adoption_status, image_url, image_url1, image_url2 FROM available_pets " +
                 "where animal_type = ? AND adoption_status = 'available'";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, type);
-        while(results.next()) {
+        while (results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
             petsByType.add(pet);
         }
@@ -88,7 +88,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
                 "adoption_status, image_url, image_url1, image_url2 FROM available_pets " +
                 "where adoption_status = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, adoptionStatus);
-        while(results.next()) {
+        while (results.next()) {
             AvailablePet pet = mapRowToAvailablePet(results);
             petsByStatus.add(pet);
         }
@@ -115,46 +115,53 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
     public AvailablePet addPet(AvailablePet pet) {
         AvailablePet returnedPet = new AvailablePet();
         String sql = "INSERT INTO available_pets (animal_type, breed, color, age, name, " +
-                "adoption_status, image_url, image_url1, image_url2) "+
+                "adoption_status, image_url, image_url1, image_url2) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
                 "RETURNING animal_id";
         try {
-            long newAnimalId = jdbcTemplate.queryForObject(sql,Long.class, pet.getAnimalType(), pet.getAnimalBreed(),
+            long newAnimalId = jdbcTemplate.queryForObject(sql, Long.class, pet.getAnimalType(), pet.getAnimalBreed(),
                     pet.getAnimalColor(), pet.getAnimalAge(), pet.getAnimalName(), pet.getAdoptionStatus(),
                     pet.getImageUrl(), pet.getImageUrl1(), pet.getImageUrl2());
-                    returnedPet = getPetById(newAnimalId);
-                    pet.setAnimalId(newAnimalId);
-                    returnedPet = pet;
-        } catch (Exception e){
-            throw new DaoException("Cannot add pet.",e);
+            returnedPet = getPetById(newAnimalId);
+            pet.setAnimalId(newAnimalId);
+            returnedPet = pet;
+        } catch (Exception e) {
+            throw new DaoException("Cannot add pet.", e);
         }
-return returnedPet;
+        return returnedPet;
     }
 
 
     @Override
-    public void updatePet(AvailablePet pet) {
-        AvailablePet updatedPet = new AvailablePet();
-        String sql = "UPDATE available_pets SET animal_type = ?, breed = ?, color = ?, age = ?," +
-                " name = ?, adoption_status = ?, image_url = ?, image_url1 = ?, image_url2 = ?" +
-                "WHERE animal_id = ?;";
-        try{
-            int numberOfRows = jdbcTemplate.update(sql, pet.getAnimalType(), pet.getAnimalBreed(),
-                    pet.getAnimalColor(), pet.getAnimalAge(), pet.getAnimalName(), pet.getAdoptionStatus(),
-                    pet.getImageUrl(), pet.getImageUrl1(), pet.getImageUrl2(), pet.getAnimalId());
-        if (numberOfRows==0){
-            throw new DaoException("Couldn't update this pet!");
-        } else {
-            updatedPet = getPetById(pet.getAnimalId());
+    public AvailablePet updatePet(AvailablePet pet) {
+        String sql = "UPDATE available_pets SET animal_type = ?, breed = ?, color = ?, age = ?, " +
+                "name = ?, adoption_status = ?, image_url = ?, image_url1 = ?, image_url2 = ? " +
+                "WHERE animal_id = ?";
+        try {
+            int rows = jdbcTemplate.update(sql,
+                    pet.getAnimalType(),
+                    pet.getAnimalBreed(),
+                    pet.getAnimalColor(),
+                    pet.getAnimalAge(),
+                    pet.getAnimalName(),
+                    pet.getAdoptionStatus(),
+                    pet.getImageUrl(),
+                    pet.getImageUrl1(),
+                    pet.getImageUrl2(),
+                    pet.getAnimalId());
+            if (rows == 0) {
+                throw new DaoException("Couldn't update pet with id " + pet.getAnimalId());
+            }
+            return getPetById(pet.getAnimalId());
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Can't update the pet with the given data", e);
+        } catch (Exception e) {
+            throw new DaoException("Something went wrong updating the pet.", e);
         }
 
-        } catch(DataIntegrityViolationException e){
-            throw new DaoException("Can't update the pet with the given data", e);
-        }catch(Exception e){
-            throw new DaoException("Something went wrong updating the pet.",e);
-        }
+
         // TODO: should we return the updated pet? or keep this void?
-        }
+    }
 
     // TODO How do we add pets from available to adopted table? Use insert statement to add
     // pet to adopted table and delete statement to remove from current table
@@ -164,11 +171,12 @@ return returnedPet;
     public List<AvailablePet> getAllPets() {
         List<AvailablePet> petList = new ArrayList<>();
         String sql = "SELECT animal_id, animal_type, breed, color, age, " +
-                "name, adoption_status, image_url, image_url1, image_url2 FROM available_pets";
+                "name, adoption_status, image_url, image_url1, image_url2 FROM available_pets WHERE adoption_status = 'available'";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
-        while(result.next()) {
+        while (result.next()) {
             AvailablePet pet = mapRowToAvailablePet(result);
-            petList.add(pet);}
+            petList.add(pet);
+        }
         return petList;
     }
 
@@ -203,9 +211,11 @@ return returnedPet;
         availablePet.setAnimalAge(rs.getInt("age"));
         availablePet.setAnimalName(rs.getString("name"));
         availablePet.setAdoptionStatus(rs.getString("adoption_status"));
-        availablePet.setImageUrl(rs.getString("image_url") != null ? rs.getString("image_url") : "/Images/default.png");
+        availablePet.setImageUrl(rs.getString("image_url") != null ? rs.getString("image_url") : "/images/default.png");
         availablePet.setImageUrl1(rs.getString("image_url1") != null ? rs.getString("image_url1") : "/images/default.png");
         availablePet.setImageUrl2(rs.getString("image_url2") != null ? rs.getString("image_url2") : "/images/default.png");
+
         return availablePet;
     }
 }
+
