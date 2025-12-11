@@ -10,7 +10,7 @@ private long parentId;
     @NotBlank
     private String lastName;
     @NotBlank
-    private int phoneNumber;
+    private String phoneNumber;
     @NotBlank
     private int streetNumber;
     @NotBlank
@@ -25,7 +25,7 @@ private long parentId;
     };
 
     public Parent(long parentId, String firstName, String lastName,
-                  int phoneNumber, int streetNumber, String streetName,
+                  String phoneNumber, int streetNumber, String streetName,
                   String cityName, String stateAbbreviation) {
         this.parentId = parentId;
         this.firstName = firstName;
@@ -61,11 +61,11 @@ private long parentId;
         this.lastName = lastName;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
