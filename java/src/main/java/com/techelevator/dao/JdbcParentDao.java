@@ -58,7 +58,7 @@ public class JdbcParentDao {
         Parent parent = new Parent();
         parent.setFirstName(rs.getString("first_name"));
         parent.setLastName(rs.getString("last_name"));
-        parent.setPhoneNumber(rs.getInt("phone_number"));
+        parent.setPhoneNumber(rs.getString("phone_number"));
         parent.setStreetNumber(rs.getInt("street_number"));
         parent.setStreetName(rs.getString("street_address"));
         parent.setCityName(rs.getString("city_name"));
