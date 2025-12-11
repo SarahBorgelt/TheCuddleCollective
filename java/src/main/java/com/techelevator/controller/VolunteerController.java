@@ -29,7 +29,7 @@ public class VolunteerController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/volunteers")
     public ShelterVolunteer addVolunteer(@RequestBody ShelterVolunteer v) {
-        return volunteerDao.addVolunteer(v);
+        return volunteerDao.createVolunteer(v);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
