@@ -3,32 +3,29 @@ import styles from './AddOrUpdatePets.module.css';
 import PetService from "../../services/PetService";
 
 export default function AddOrUpdatePets() {
-    const [mode, setMode] = useState(null); // 'add' or 'update'
-     const [formData, setFormData] = useState({
-    animalType: '',
-    animalBreed: '',
-    animalColor: '',
-    animalAge: '',
-    animalName: '',
-    adoptionStatus: 'available',
-    imageUrl: '',
-    imageUrl1: '',
-    imageUrl2: '',
-});
-
+    const [mode, setMode] = useState(null);
+    const [formData, setFormData] = useState({
+        animal_type: '',
+        breed: '',
+        color: '',
+        age: '',
+        name: '',
+        adoption_status: '',
+        image_url: '',
+        image_url1: '',
+        image_url2: '',
+    });
 
     const [petsList, setPetsList] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedPet, setSelectedPet] = useState(null);
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const [imageOptions, setImageOptions] = useState({
         image_url: 'url',
         image_url1: 'url',
         image_url2: 'url'
     });
+    const [successMessage, setSuccessMessage] = useState('');
 
-    // Load all pets
     const loadPets = () => {
         PetService.getAllAvailablePets()
             .then(res => setPetsList(res.data))
@@ -39,7 +36,6 @@ export default function AddOrUpdatePets() {
         if (mode === 'update') loadPets();
     }, [mode]);
 
-    // Populate form when a pet is selected
     useEffect(() => {
         if (selectedPet) {
             setFormData({
@@ -48,7 +44,7 @@ export default function AddOrUpdatePets() {
                 color: selectedPet.color || '',
                 age: selectedPet.age != null ? selectedPet.age : '',
                 name: selectedPet.name || '',
-                adoption_status: selectedPet.adoption_status || 'available',
+                adoption_status: selectedPet.adoption_status || '',
                 image_url: selectedPet.image_url || '',
                 image_url1: selectedPet.image_url1 || '',
                 image_url2: selectedPet.image_url2 || '',
@@ -65,43 +61,32 @@ export default function AddOrUpdatePets() {
         }
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        setSuccessMessage('');
-        setErrorMessage('');
-
-        if (mode === 'add') {
-            PetService.addNewPet(formData)
-                .then(() => {
-                    setSuccessMessage('Pet added successfully!');
-                    loadPets();
-                    setFormData({
-                        animal_type: '',
-                        breed: '',
-                        color: '',
-                        age: '',
-                        name: '',
-                        adoption_status: 'available',
-                        image_url: '',
-                        image_url1: '',
-                        image_url2: '',
-                    });
-                })
-                .catch(err => {
-                    console.error(err);
-                    setErrorMessage('Failed to add pet.');
+        try {
+            if (mode === 'add') {
+                const addedPet = await PetService.addNewPet(formData);
+                setSuccessMessage(`Pet "${addedPet.data.name}" added successfully!`);
+                setFormData({
+                    animal_type: '',
+                    breed: '',
+                    color: '',
+                    age: '',
+                    name: '',
+                    adoption_status: '',
+                    image_url: '',
+                    image_url1: '',
+                    image_url2: '',
                 });
-        } else if (mode === 'update') {
-            if (!selectedPet) return setErrorMessage('Select a pet to update');
-            PetService.updatePet(selectedPet.animal_id, formData)
-                .then(() => {
-                    setSuccessMessage('Pet updated successfully!');
-                    loadPets();
-                })
-                .catch(err => {
-                    console.error(err);
-                    setErrorMessage('Failed to update pet.');
-                });
+            } else if (mode === 'update') {
+                if (!selectedPet) return alert('Select a pet to update');
+                const updatedPet = await PetService.updatePet(selectedPet.animal_id, formData);
+                setSuccessMessage(`Pet "${updatedPet.data.name}" updated successfully!`);
+                loadPets();
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to save pet. Check console for details.');
         }
     };
 
@@ -133,7 +118,6 @@ export default function AddOrUpdatePets() {
             <h2 className={styles.title}>{mode === 'add' ? 'Add New Pet' : 'Update Pet'}</h2>
 
             {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
-            {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
 
             {mode === 'update' && (
                 <div className={styles.updateSection}>
@@ -152,7 +136,9 @@ export default function AddOrUpdatePets() {
                                 setSelectedPet(null);
                                 setSearchTerm('');
                                 loadPets();
-                            }}>Back</button>
+                            }}>
+                                Back
+                            </button>
                         </div>
                     </div>
                     <div className={styles.petsList}>
@@ -218,7 +204,29 @@ export default function AddOrUpdatePets() {
                         <div className={styles.row} key={imgField}>
                             <div className={styles.field}>
                                 <label>{idx === 0 ? 'Main Image' : `Additional Image ${idx}`}</label>
-                                <input type="text" name={imgField} value={formData[imgField]} onChange={handleChange} />
+                                <div className={styles.imageOptions}>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name={`${imgField}_option`}
+                                            checked={imageOptions[imgField] === 'url'}
+                                            onChange={() => setImageOptions(prev => ({ ...prev, [imgField]: 'url' }))}
+                                        /> URL
+                                    </label>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name={`${imgField}_option`}
+                                            checked={imageOptions[imgField] === 'upload'}
+                                            onChange={() => setImageOptions(prev => ({ ...prev, [imgField]: 'upload' }))}
+                                        /> Upload
+                                    </label>
+                                </div>
+                                {imageOptions[imgField] === 'url' ? (
+                                    <input type="text" name={imgField} value={formData[imgField]} onChange={handleChange} />
+                                ) : (
+                                    <input type="file" name={imgField} onChange={handleChange} />
+                                )}
                             </div>
                         </div>
                     ))}
@@ -227,10 +235,7 @@ export default function AddOrUpdatePets() {
                         <button type="submit" className={styles.submitButton}>
                             {mode === 'add' ? 'Add Pet' : 'Update Pet'}
                         </button>
-                        <button type="button" className={styles.backButton} onClick={() => {
-                            setMode(null);
-                            setSelectedPet(null);
-                        }}>
+                        <button type="button" className={styles.backButton} onClick={() => { setMode(null); setSelectedPet(null); }}>
                             Back
                         </button>
                     </div>
