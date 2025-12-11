@@ -24,5 +24,11 @@ public interface AvailablePetDao {
 
     List<AvailablePet> getAllPets();
 
+<<<<<<< java/src/main/java/com/techelevator/dao/AvailablePetDao.java
+    List<AvailablePet> getAllAdoptedPets();
+
     void updatePetToAdopted(AvailablePet pet, int parent_id);
+=======
+    void updatePetToAdopted(AvailablePet pet, int parent_id);
+>>>>>>> java/src/main/java/com/techelevator/dao/AvailablePetDao.java
 }

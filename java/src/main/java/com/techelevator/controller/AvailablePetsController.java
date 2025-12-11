@@ -6,6 +6,7 @@ import com.techelevator.model.AvailablePet;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -55,6 +56,16 @@ public class AvailablePetsController {
         try{
             return availablePetDao.addPet(availablePet);
         } catch(DaoException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    @PermitAll
+    public List<AvailablePet> getAllAdoptedPets(){
+        try{
+            return availablePetDao.getAllAdoptedPets();
+        } catch (DaoException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }

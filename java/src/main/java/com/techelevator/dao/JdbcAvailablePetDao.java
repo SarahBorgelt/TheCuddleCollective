@@ -180,6 +180,40 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
         return petList;
     }
 
+<<<<<<< java/src/main/java/com/techelevator/dao/JdbcAvailablePetDao.java
+    @Override
+    public List<AvailablePet> getAllAdoptedPets() {
+        List<AvailablePet> adoptedPets = new ArrayList<>();
+        String sql = "SELECT animal_id, animal_type, breed, color, age, " +
+                "name, image_url, image_url1, image_url2 FROM available_pets where adoption_status = 'approved'";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
+        while(result.next()){
+            AvailablePet pet = mapRowToAvailablePet(result);
+            adoptedPets.add(pet);
+        }
+        return adoptedPets;
+
+            public void updatePetToAdopted(AvailablePet pet, int parent_id) {
+        AvailablePet updatedPet = new AvailablePet();
+        String sql = "UPDATE available_pets SET animal_type = ?, breed = ?, color = ?, age = ?," +
+                " name = ?, adoption_status = ?, image_url = ?, image_url1 = ?, image_url2 = ?, parent_id = ?" +
+                "WHERE animal_id = ?;";
+        try{
+            int numberOfRows = jdbcTemplate.update(sql, pet.getAnimalType(), pet.getAnimalBreed(),
+                    pet.getAnimalColor(), pet.getAnimalAge(), pet.getAnimalName(), pet.getAdoptionStatus(),
+                    pet.getImageUrl(), pet.getImageUrl1(), pet.getImageUrl2(), parent_id, pet.getAnimalId());
+            if (numberOfRows==0){
+                throw new DaoException("Couldn't update this pet!");
+            } else {
+                updatedPet = getPetById(pet.getAnimalId());
+            }
+        } catch(DataIntegrityViolationException e){
+            throw new DaoException("Can't update the pet with the given data", e);
+        }catch(Exception e){
+            throw new DaoException("Something went wrong updating the pet.",e);
+        }
+
+=======
 @Override
     public void updatePetToAdopted(AvailablePet pet, int parent_id) {
         AvailablePet updatedPet = new AvailablePet();
@@ -200,6 +234,7 @@ public class JdbcAvailablePetDao implements AvailablePetDao {
         }catch(Exception e){
             throw new DaoException("Something went wrong updating the pet.",e);
         }
+>>>>>>> java/src/main/java/com/techelevator/dao/JdbcAvailablePetDao.java
     }
 
     private AvailablePet mapRowToAvailablePet(SqlRowSet rs) {
