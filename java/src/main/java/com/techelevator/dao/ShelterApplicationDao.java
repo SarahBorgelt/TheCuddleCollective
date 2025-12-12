@@ -13,4 +13,5 @@ public interface ShelterApplicationDao {
 
     void save(ShelterApplication app);
 
+    String getApplicationStatus(int applicationId);
 }

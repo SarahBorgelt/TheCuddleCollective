@@ -13,12 +13,12 @@ public class JdbcVolunteersDaoTest extends BaseDaoTest {
 
     private JdbcUserDao sut;
 
-    protected static final ShelterVolunteer VOL_1 = new ShelterVolunteer("1", "Chris", "Chrissington",
-            "chris@shelter.org", "2202004000");
-    protected static final ShelterVolunteer VOL_2 = new ShelterVolunteer("2", "Sarah", "Sarrington",
-            "sarah@shelter.org", "5505004000");
-    private static final ShelterVolunteer VOL_3 = new ShelterVolunteer("3", "Max", "Maxxington",
-            "max@shelter.org", "3303005000");
+//    protected static final ShelterVolunteer VOL_1 = new ShelterVolunteer("1", "Chris", "Chrissington",
+//            "chris@shelter.org", "2202004000");
+//    protected static final ShelterVolunteer VOL_2 = new ShelterVolunteer("2", "Sarah", "Sarrington",
+//            "sarah@shelter.org", "5505004000");
+//    private static final ShelterVolunteer VOL_3 = new ShelterVolunteer("3", "Max", "Maxxington",
+//            "max@shelter.org", "3303005000");
 
 //    String volunteerId, String firstName, String lastName, String email, String phoneNumber
 
