@@ -31,14 +31,7 @@ export default function App() {
               <Route path="/availablePets" element={<AvailablePets />} />
               <Route path="/logout" element={<LogoutView />} />
               <Route path="/register" element={<RegisterView />} />
-              <Route
-                path="/addOrUpdatePets"
-                element={
-                  <ProtectedRoute>
-                    <AddOrUpdatePets />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/addOrUpdatePets" element={<AddOrUpdatePets />}/>
               <Route
                 path="/userProfile"
                 element={
@@ -47,8 +40,8 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-            <Route path="/volunteer/apply" element={<VolunteerApplicationForm />} />
-        <Route path="/volunteer/directory" element={<VolunteerDirectory />}        />
+              <Route path="/volunteer/apply" element={<VolunteerApplicationForm />} />
+              <Route path="/volunteer/directory" element={<VolunteerDirectory />}        />
             </Routes>
           </main>
           <footer id = "app-footer">

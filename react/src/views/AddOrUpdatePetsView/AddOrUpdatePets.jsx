@@ -1,246 +1,274 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './AddOrUpdatePets.module.css';
-import PetService from "../../services/PetService";
+import axios from 'axios';
 
 export default function AddOrUpdatePets() {
-    const [mode, setMode] = useState(null);
-    const [formData, setFormData] = useState({
-        animal_type: '',
+  const [mode, setMode] = useState(null);
+  const [formData, setFormData] = useState({
+    type: '',
+    breed: '',
+    color: '',
+    age: '',
+    name: '',
+    adoptionStatus: 'available',
+    imageUrl: '',
+    imageUrl1: '',
+    imageUrl2: '',
+  });
+  const [petsList, setPetsList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPet, setSelectedPet] = useState(null);
+  const [imageOptions, setImageOptions] = useState({
+    imageUrl: 'url',
+    imageUrl1: 'url',
+    imageUrl2: 'url',
+  });
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const token = localStorage.getItem('token');
+
+  const axiosWithAuth = axios.create({
+    baseURL: 'http://localhost:9000',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  // FETCH PETS
+  const loadPets = useCallback(() => {
+    axiosWithAuth
+      .get('/availablePets')
+      .then((res) => {
+        const normalized = res.data.map((p) => ({
+          animalId: p.animal_id,
+          type: p.animal_type,
+          breed: p.animal_breed,
+          color: p.animal_color,
+          age: p.animal_age,
+          name: p.animal_name,
+          adoptionStatus: p.adoption_status,
+          imageUrl: p.image_url,
+          imageUrl1: p.image_url1,
+          imageUrl2: p.image_url2,
+        }));
+        setPetsList(normalized);
+      })
+      .catch((err) => console.error('Error fetching pets:', err));
+  }, [axiosWithAuth]);
+
+  useEffect(() => {
+    if (mode === 'update') loadPets();
+  }, [mode, loadPets]);
+
+  // Pre-fill form when pet is selected
+  useEffect(() => {
+    if (selectedPet) {
+      setFormData({
+        type: selectedPet.type || '',
+        breed: selectedPet.breed || '',
+        color: selectedPet.color || '',
+        age: selectedPet.age ?? '',
+        name: selectedPet.name || '',
+        adoptionStatus: selectedPet.adoptionStatus || 'available',
+        imageUrl: selectedPet.imageUrl || '',
+        imageUrl1: selectedPet.imageUrl1 || '',
+        imageUrl2: selectedPet.imageUrl2 || '',
+      });
+    }
+  }, [selectedPet]);
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (files && files[0]) {
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!token) return alert('You must be logged in');
+
+    const hasFile =
+      imageOptions.imageUrl === 'upload' ||
+      imageOptions.imageUrl1 === 'upload' ||
+      imageOptions.imageUrl2 === 'upload';
+
+    let payload;
+    let headers = { Authorization: `Bearer ${token}` };
+
+    if (hasFile) {
+      payload = new FormData();
+      Object.keys(formData).forEach((key) => {
+        payload.append(key, formData[key]);
+      });
+      headers['Content-Type'] = 'multipart/form-data';
+    } else {
+      payload = { ...formData };
+    }
+
+    try {
+      if (mode === 'add') {
+        const res = await axiosWithAuth.post('/availablePets', payload, { headers });
+        setSuccessMessage(`Pet "${res.data.name}" added successfully!`);
+      } else if (mode === 'update') {
+        if (!selectedPet) return alert('Select a pet to update');
+        const res = await axiosWithAuth.put(`/availablePets/${selectedPet.animalId}`, payload, { headers });
+        setSuccessMessage(`Pet "${res.data.name}" updated successfully!`);
+        loadPets();
+      }
+
+      setFormData({
+        type: '',
         breed: '',
         color: '',
         age: '',
         name: '',
-        adoption_status: '',
-        image_url: '',
-        image_url1: '',
-        image_url2: '',
-    });
-
-    const [petsList, setPetsList] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedPet, setSelectedPet] = useState(null);
-    const [imageOptions, setImageOptions] = useState({
-        image_url: 'url',
-        image_url1: 'url',
-        image_url2: 'url'
-    });
-    const [successMessage, setSuccessMessage] = useState('');
-
-    const loadPets = () => {
-        PetService.getAllAvailablePets()
-            .then(res => setPetsList(res.data))
-            .catch(err => console.error(err));
-    };
-
-    useEffect(() => {
-        if (mode === 'update') loadPets();
-    }, [mode]);
-
-    useEffect(() => {
-        if (selectedPet) {
-            setFormData({
-                animal_type: selectedPet.animal_type || '',
-                breed: selectedPet.breed || '',
-                color: selectedPet.color || '',
-                age: selectedPet.age != null ? selectedPet.age : '',
-                name: selectedPet.name || '',
-                adoption_status: selectedPet.adoption_status || '',
-                image_url: selectedPet.image_url || '',
-                image_url1: selectedPet.image_url1 || '',
-                image_url2: selectedPet.image_url2 || '',
-            });
-        }
-    }, [selectedPet]);
-
-    const handleChange = e => {
-        const { name, value, files } = e.target;
-        if (files) {
-            setFormData(prev => ({ ...prev, [name]: files[0] }));
-        } else {
-            setFormData(prev => ({ ...prev, [name]: value }));
-        }
-    };
-
-    const handleSubmit = async e => {
-        e.preventDefault();
-        try {
-            if (mode === 'add') {
-                const addedPet = await PetService.addNewPet(formData);
-                setSuccessMessage(`Pet "${addedPet.data.name}" added successfully!`);
-                setFormData({
-                    animal_type: '',
-                    breed: '',
-                    color: '',
-                    age: '',
-                    name: '',
-                    adoption_status: '',
-                    image_url: '',
-                    image_url1: '',
-                    image_url2: '',
-                });
-            } else if (mode === 'update') {
-                if (!selectedPet) return alert('Select a pet to update');
-                const updatedPet = await PetService.updatePet(selectedPet.animal_id, formData);
-                setSuccessMessage(`Pet "${updatedPet.data.name}" updated successfully!`);
-                loadPets();
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Failed to save pet. Check console for details.');
-        }
-    };
-
-    const handleSearch = () => {
-        if (!searchTerm) {
-            loadPets();
-        } else {
-            const filtered = petsList.filter(p =>
-                p.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setPetsList(filtered);
-        }
-    };
-
-    if (!mode) {
-        return (
-            <div className={styles.container}>
-                <h2 className={styles.title}>What would you like to do?</h2>
-                <div className={styles.buttonRow}>
-                    <button className={styles.actionButton} onClick={() => setMode('add')}>Add Pet</button>
-                    <button className={styles.actionButton} onClick={() => setMode('update')}>Update Pet</button>
-                </div>
-            </div>
-        );
+        adoptionStatus: 'available',
+        imageUrl: '',
+        imageUrl1: '',
+        imageUrl2: '',
+      });
+      setSelectedPet(null);
+    } catch (err) {
+      console.error('Failed to save pet:', err);
+      alert('Failed to save pet. Check console for details.');
     }
+  };
 
-    return (
-        <div className={styles.container}>
-            <h2 className={styles.title}>{mode === 'add' ? 'Add New Pet' : 'Update Pet'}</h2>
-
-            {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
-
-            {mode === 'update' && (
-                <div className={styles.updateSection}>
-                    <div className={styles.updateHeader}>
-                        <div className={styles.searchRow}>
-                            <input
-                                type="text"
-                                placeholder="Search pets..."
-                                value={searchTerm}
-                                onChange={e => setSearchTerm(e.target.value)}
-                                className={styles.searchInput}
-                            />
-                            <button className={styles.searchButton} onClick={handleSearch}>Search</button>
-                            <button className={styles.backButton} onClick={() => {
-                                setMode(null);
-                                setSelectedPet(null);
-                                setSearchTerm('');
-                                loadPets();
-                            }}>
-                                Back
-                            </button>
-                        </div>
-                    </div>
-                    <div className={styles.petsList}>
-                        {petsList.map(pet => (
-                            <div
-                                key={pet.animal_id}
-                                className={`${styles.petCard} ${selectedPet?.animal_id === pet.animal_id ? styles.selectedPet : ''}`}
-                                onClick={() => setSelectedPet(pet)}
-                            >
-                                <img src={pet.image_url} alt={pet.name} className={styles.petImage} />
-                                <div>{pet.name} ({pet.animal_type})</div>
-                            </div>
-                        ))}
-                        {petsList.length === 0 && <div>No pets found</div>}
-                    </div>
-                </div>
-            )}
-
-            {(mode === 'add' || selectedPet) && (
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <div className={styles.row}>
-                        <div className={styles.field}>
-                            <label>Name</label>
-                            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Type</label>
-                            <input type="text" name="animal_type" value={formData.animal_type} onChange={handleChange} required />
-                        </div>
-                    </div>
-
-                    <div className={styles.row}>
-                        <div className={styles.field}>
-                            <label>Breed</label>
-                            <input type="text" name="breed" value={formData.breed} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Color</label>
-                            <input type="text" name="color" value={formData.color} onChange={handleChange} required />
-                        </div>
-                    </div>
-
-                    <div className={styles.row}>
-                        <div className={styles.field}>
-                            <label>Age</label>
-                            <input type="number" name="age" value={formData.age ?? ''} onChange={handleChange} required />
-                        </div>
-                    </div>
-
-                    <div className={styles.row}>
-                        <div className={styles.field}>
-                            <label>Adoption Status</label>
-                            <select name="adoption_status" value={formData.adoption_status} onChange={handleChange}>
-                                <option value="available">Available</option>
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    {['image_url', 'image_url1', 'image_url2'].map((imgField, idx) => (
-                        <div className={styles.row} key={imgField}>
-                            <div className={styles.field}>
-                                <label>{idx === 0 ? 'Main Image' : `Additional Image ${idx}`}</label>
-                                <div className={styles.imageOptions}>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name={`${imgField}_option`}
-                                            checked={imageOptions[imgField] === 'url'}
-                                            onChange={() => setImageOptions(prev => ({ ...prev, [imgField]: 'url' }))}
-                                        /> URL
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name={`${imgField}_option`}
-                                            checked={imageOptions[imgField] === 'upload'}
-                                            onChange={() => setImageOptions(prev => ({ ...prev, [imgField]: 'upload' }))}
-                                        /> Upload
-                                    </label>
-                                </div>
-                                {imageOptions[imgField] === 'url' ? (
-                                    <input type="text" name={imgField} value={formData[imgField]} onChange={handleChange} />
-                                ) : (
-                                    <input type="file" name={imgField} onChange={handleChange} />
-                                )}
-                            </div>
-                        </div>
-                    ))}
-
-                    <div className={styles.buttonRow}>
-                        <button type="submit" className={styles.submitButton}>
-                            {mode === 'add' ? 'Add Pet' : 'Update Pet'}
-                        </button>
-                        <button type="button" className={styles.backButton} onClick={() => { setMode(null); setSelectedPet(null); }}>
-                            Back
-                        </button>
-                    </div>
-                </form>
-            )}
-        </div>
+  // Search pets
+  const handleSearch = () => {
+    if (!searchTerm) return loadPets();
+    setPetsList((prev) =>
+      prev.filter((p) =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     );
+  };
+
+  // Mode selection screen
+  if (!mode) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.title}>What would you like to do?</h2>
+        <div className={styles.buttonRow}>
+          <button onClick={() => setMode('add')} className={styles.actionButton}>Add Pet</button>
+          <button onClick={() => setMode('update')} className={styles.actionButton}>Update Pet</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <h2 className={styles.title}>{mode === 'add' ? 'Add New Pet' : 'Update Pet'}</h2>
+
+      {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
+
+      {mode === 'update' && (
+        <div className={styles.updateSection}>
+          <div className={styles.searchRow}>
+            <input
+              type="text"
+              placeholder="Search pets..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={styles.searchInput}
+            />
+            <button onClick={handleSearch} className={styles.searchButton}>Search</button>
+            <button onClick={() => { setMode(null); setSelectedPet(null); setSearchTerm(''); }} className={styles.backButton}>Back</button>
+          </div>
+
+          <div className={styles.petsList}>
+            {petsList.map((pet) => (
+              <div
+                key={pet.animalId}
+                className={`${styles.petCard} ${selectedPet?.animalId === pet.animalId ? styles.selectedPet : ''}`}
+                onClick={() => setSelectedPet(pet)}
+              >
+                <img src={pet.imageUrl} alt={pet.name} className={styles.petImage} />
+                <div>{pet.name} ({pet.type})</div>
+              </div>
+            ))}
+            {petsList.length === 0 && <div>No pets found</div>}
+          </div>
+        </div>
+      )}
+
+      {(mode === 'add' || selectedPet) && (
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label htmlFor="name">Name</label>
+              <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="type">Type</label>
+              <input type="text" id="type" name="type" value={formData.type} onChange={handleChange} required />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label htmlFor="breed">Breed</label>
+              <input type="text" id="breed" name="breed" value={formData.breed} onChange={handleChange} required />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="color">Color</label>
+              <input type="text" id="color" name="color" value={formData.color} onChange={handleChange} required />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label htmlFor="age">Age</label>
+              <input type="number" id="age" name="age" value={formData.age ?? ''} onChange={handleChange} required />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label htmlFor="adoptionStatus">Adoption Status</label>
+              <select id="adoptionStatus" name="adoptionStatus" value={formData.adoptionStatus} onChange={handleChange}>
+                <option value="available">Available</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          {['imageUrl', 'imageUrl1', 'imageUrl2'].map((img, i) => (
+            <div className={styles.row} key={img}>
+              <div className={styles.field}>
+                <label htmlFor={img}>{i === 0 ? 'Main Image' : `Additional Image ${i}`}</label>
+                <div className={styles.imageOptions}>
+                  <label>
+                    <input type="radio" name={`${img}_option`} checked={imageOptions[img] === 'url'} onChange={() => setImageOptions(p => ({ ...p, [img]: 'url' }))} />
+                    URL
+                  </label>
+                  <label>
+                    <input type="radio" name={`${img}_option`} checked={imageOptions[img] === 'upload'} onChange={() => setImageOptions(p => ({ ...p, [img]: 'upload' }))} />
+                    Upload
+                  </label>
+                </div>
+
+                {imageOptions[img] === 'url' ? (
+                  <input type="text" id={img} name={img} value={formData[img]} onChange={handleChange} />
+                ) : (
+                  <input type="file" id={img} name={img} accept="image/*" onChange={handleChange} />
+                )}
+              </div>
+            </div>
+          ))}
+
+          <div className={styles.buttonRow}>
+            <button type="submit" className={styles.submitButton}>{mode === 'add' ? 'Add Pet' : 'Update Pet'}</button>
+            <button type="button" className={styles.backButton} onClick={() => { setMode(null); setSelectedPet(null); }}>Back</button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
 }

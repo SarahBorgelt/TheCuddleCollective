@@ -132,15 +132,19 @@ select:focus {
      margin-top: 10px;
 }
 
+
 .petCard {
-     border: 1px solid #ccc; 
+     border: 1px solid #ccc;
      border-radius: 8px;
      padding: 10px;
      cursor: pointer;
-     width: 150px;
+     width: 150px;         
      text-align: center;
-     background-color: #92B6F0; 
+     background-color: #92B6F0;
      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
 }
 
 .petCard:hover {
