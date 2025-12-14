@@ -6,20 +6,21 @@ export default{
         return axios.get("/volunteer/directory");
 },
 
-    addNewVolunteer(volunteer_id){
-        return axios.post(`volunteers/${volunteer_id}`);
+    addNewVolunteer(volunteer){
+        return axios.post("/volunteers", volunteer);
 },
 
     deleteFromVolunteer(volunteer_id){
-        return axios.delete(`volunteers/${volunteer_id}`);
+        return axios.delete(`/volunteers/${volunteer_id}`);
 },
 
     submitApplication(applicant) {
-        return axios.post("/volunteer/submit", null, {
+        return axios.post("/volunteer/apply", null, {
             params: {
                 firstName: applicant.firstName,
                 lastName: applicant.lastName,
-                email: applicant.email
+                email: applicant.email,
+                phoneNumber: applicant.phoneNumber
             }
         });
 }
