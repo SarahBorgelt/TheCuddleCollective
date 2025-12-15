@@ -1,0 +1,21 @@
+
+.container {
+     width: 90%;
+     max-width: 1000px;
+     margin: 0 auto;
+     padding: 20px;
+}
+
+.title {
+     text-align: center;
+     margin-bottom: 30px;
+}
+
+.petList {
+     display: flex;
+     flex-direction: column; 
+     gap: 20px; 
+     align-items: center; 
+}
+
+

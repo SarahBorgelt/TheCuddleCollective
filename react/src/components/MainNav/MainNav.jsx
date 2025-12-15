@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import styles from './MainNav.module.css';
+// NavLink on line 32 was added by me, may need to remove later.
 
 export default function MainNav() {
   const { user } = useContext(UserContext);
@@ -26,6 +27,15 @@ export default function MainNav() {
           }
         >
           Available Pets
+        </NavLink>
+
+           <NavLink
+          to="/adoptedPets"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          Adopted Pets
         </NavLink>
 
         {user ? (

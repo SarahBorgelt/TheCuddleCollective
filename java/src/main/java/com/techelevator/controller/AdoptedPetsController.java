@@ -32,4 +32,6 @@ public class AdoptedPetsController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
+
+    // Use an ID GET method to grab a pet from the list and then "display" it on the page?
 }

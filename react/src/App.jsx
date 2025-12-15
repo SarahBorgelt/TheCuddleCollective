@@ -16,6 +16,9 @@ import MainNav from './components/MainNav/MainNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
+import AdoptedPets from './views/AdoptedPetsView/AdoptedPets';
+
+
 
 export default function App() {
 
@@ -36,6 +39,7 @@ export default function App() {
               <Route path="/login" element={<LoginView />} />
               <Route path="/register" element={<RegisterView />} />
               <Route path="/availablePets" element={<AvailablePets />} />
+              <Route path='/adoptedPets' element={<AdoptedPets />} />
               <Route path="/first-login" element={<FirstLoginView />} />
               <Route path="/logout" element={<LogoutView />} />
               <Route path="/volunteer/apply" element={<VolunteerApplicationForm />} />
