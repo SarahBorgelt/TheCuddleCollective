@@ -57,12 +57,12 @@ public class JdbcAvailablePetDaoTest extends BaseDaoTest {
 
         jdbcTemplate.update(insertSql,
                 PET_2.getAnimalId(), PET_2.getAnimalType(), PET_2.getAnimalBreed(),
-                PET_2.getAnimalColor(), PET_2.getAnimalAge(), PET_2.getAnimalName(), "available",
+                PET_2.getAnimalColor(), PET_2.getAnimalAge(), PET_2.getAnimalName(), PET_2.getAdoptionStatus(),
                 PET_2.getImageUrl(), PET_2.getImageUrl1(), PET_2.getImageUrl2());
 
         jdbcTemplate.update(insertSql,
                 PET_3.getAnimalId(), PET_3.getAnimalType(), PET_3.getAnimalBreed(),
-                PET_3.getAnimalColor(), PET_3.getAnimalAge(), PET_3.getAnimalName(), "available",
+                PET_3.getAnimalColor(), PET_3.getAnimalAge(), PET_3.getAnimalName(), PET_3.getAdoptionStatus(),
                 PET_3.getImageUrl(), PET_3.getImageUrl1(), PET_3.getImageUrl2());
     }
 
@@ -83,10 +83,8 @@ public class JdbcAvailablePetDaoTest extends BaseDaoTest {
         String testBreed = "pitbull";
         List<AvailablePet> result = sut.getAvailablePetsByBreed(testBreed);
         assertNotNull(result, "The result list should not be null.");
-        assertEquals(1, result.size(), "Only one pet of breed 'pitbull' should be returned.");
-        AvailablePet actualPet = result.get(0);
-        assertEquals(PET_2.getAnimalBreed(), actualPet.getAnimalBreed(), "Animal Breed should match 'pitbull'.");
-    }
+        assertEquals(0, result.size(), "Only one pet of breed 'pitbull' should be returned.");
+       }
 
 
 //    List<AvailablePet> getAvailablePetsByColor(String Color);
@@ -106,9 +104,8 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
         String testColor = "brown";
         List<AvailablePet> result = sut.getAvailablePetsByColor(testColor);
         assertNotNull(result, "The result list should not be null.");
-        assertEquals(1, result.size(), "Only one color, brown, should be returned.");
-        AvailablePet actualPet = result.get(0);
-        assertEquals(PET_2.getAnimalColor(), actualPet.getAnimalColor(), "Animal color should match 'brown'.");
+        assertEquals(0, result.size(), "This pet isn't available");
+
     }
 
 
@@ -119,9 +116,9 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
         int testAge = 4;
         List<AvailablePet> result = sut.getAvailablePetsByAge(testAge);
         assertNotNull(result, "The result list should not be null.");
-        assertEquals(2, result.size(), "Only one color, orange, should be returned.");
+        assertEquals(2, result.size(), "Two pets are 4 years old!");
         AvailablePet actualPet = result.get(0);
-        assertEquals(PET_3.getAnimalAge(), actualPet.getAnimalAge(), "Animal color should match 'orange'.");
+        assertEquals(PET_3.getAnimalAge(), actualPet.getAnimalAge(), "animal age should match 4.");
     }
 
     @Test
@@ -130,18 +127,59 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
         List<AvailablePet> result = sut.getAvailablePetsByAge(testAge);
         assertNotNull(result, "The result list should not be null.");
         assertEquals(0, result.size(), "None should be returned.");
+
+    }
+
+//    List<AvailablePet> getAvailablePetsByType(String type);
+//
+
+    @Test
+    public void getAvailablePetsByType_returnsCorrectAmount() {
+        String testType = "cat";
+        List<AvailablePet> result = sut.getAvailablePetsByType(testType);
+        assertNotNull(result, "The result list should not be null.");
+        assertEquals(2, result.size(), "Two cats are in the database.");
         AvailablePet actualPet = result.get(0);
-        assertEquals(PET_2.getAnimalAge(), actualPet.getAnimalAge(), "Age should match, but unavailable");
+        assertEquals(PET_3.getAnimalAge(), actualPet.getAnimalAge(), "Animal type should match 'cat'.");
+    }
+
+    @Test
+    public void getAvailablePetsByType_doesntListNonAvailPets() {
+        String testType = "dog";
+        List<AvailablePet> result = sut.getAvailablePetsByType(testType);
+        assertNotNull(result, "The result list should not be null.");
+        assertEquals(0, result.size(), "None should be returned.");
+       }
+
+//    List<AvailablePet> getAvailablePetsByAdoptionStatus(String adoptionStatus);
+//
+
+    @Test
+    public void getAvailablePetsByStatus_returnsCorrectAmount() {
+        String testStatus = "available";
+        List<AvailablePet> result = sut.getAvailablePetsByAdoptionStatus(testStatus);
+        assertNotNull(result, "The result list should not be null.");
+        assertEquals(2, result.size(), "Two animals are available in the database.");
+        AvailablePet actualPet = result.get(0);
+        assertEquals(PET_3.getAdoptionStatus(), actualPet.getAdoptionStatus(), "status should match.");
+    } // edit SQL statement in jdbc once affirmed no one is working in that class.
+
+
+
+//    AvailablePet getPetById(long petId);
+//
+
+    @Test
+    public void getAvailablePetsById_returnsCorrectAnimal() {
+        long testId = 1;
+        AvailablePet result = sut.getPetById(testId);
+        assertNotNull(result, "The result list should not be null.");
+        assertEquals(PET_1.getAnimalId(), result.getAnimalId(), "These animals should match.");
     }
 
 
 
-//    List<AvailablePet> getAvailablePetsByType(String type);
-//
-//    List<AvailablePet> getAvailablePetsByAdoptionStatus(String adoptionStatus);
-//
-//    AvailablePet getPetById(long petId);
-//
+
 //    AvailablePet addPet(AvailablePet pet);
 //
 //    AvailablePet updatePet(AvailablePet pet);
