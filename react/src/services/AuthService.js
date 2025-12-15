@@ -1,22 +1,42 @@
-import axios from 'axios';
+import authApi from '../api/authApi';
+import firstLoginApi from '../api/firstLoginApi';
 
-/**
- * This service class is used to interact with the server's Authentication API.
- * All methods return a Promise so that the calling code can handle both success and
- * error responses appropriately.
- */
-export default {
+const TOKEN_KEY = 'auth_token';
+const USER_KEY = 'auth_user';
 
-  login(user) {
-    return axios.post('/login', user);
+const authService = {
+  async login(username, password) {
+    const response = await authApi.login({ username, password });
+
+    const { token, user } = response.data;
+
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+
+    return user;
   },
 
-  register(user) {
-    return axios.post('/register', user);
+  logout() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
   },
 
-  getUserProfile(userId) {
-    return axios.get(`/users/${userId}`);
+  getCurrentUser() {
+    const user = localStorage.getItem(USER_KEY);
+    return user ? JSON.parse(user) : null;
   },
 
-}
+  async isFirstLogin() {
+    const response = await authApi.getFirstLoginStatus();
+    return response.data;
+  },
+
+  async completeFirstLogin(username, newPassword) {
+    return firstLoginApi.completeFirstLogin({
+      username,
+      newPassword
+    });
+  }
+};
+
+export default authService;

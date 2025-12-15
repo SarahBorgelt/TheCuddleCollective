@@ -29,7 +29,12 @@ export default function LoginView() {
         localStorage.setItem('token', token);
 
         setUser(user);
-        navigate('/');
+
+        if (user.firstLogin) {
+          navigate('/first-login');
+        } else {
+          navigate('/');
+        }
       })
       .catch((error) => {
         const message = error.response?.data?.message || 'Login failed.';

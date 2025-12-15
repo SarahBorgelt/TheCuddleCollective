@@ -37,7 +37,7 @@ return(
             <input type="radio" value=""></input> Cincinnati
             </label>
             <label>
-            <input type="radio"></input> Cleveland
+                 <input type="radio"></input> Cleveland
             </label>
             <label>
                 <input type="radio"></input> Colombus
@@ -45,6 +45,7 @@ return(
             <label>
                 <input type="radio"></input> Atlanta
             </label>
+            
             <button type="submit">Submit</button>
             </p>
     </form>
