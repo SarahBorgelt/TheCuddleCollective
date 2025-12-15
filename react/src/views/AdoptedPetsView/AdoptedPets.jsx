@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
-import styles from './AdoptedPets.css'
-import PetService from '../../services/PetService';
+import styles from './AdoptedPets.module.css'
+import AdoptedPetService from '../../services/AdoptedPetService';
 import PetCard from '../../components/PetCard/PetCard';
 
-export default function AdoptedPets(){
-       const [pets, setPets] = useState([]);
+export default function AdoptedPets() {
+    const [pets, setPets] = useState([]);
+    const [featured, setFeatured] = useState(null);
 
-        useEffect(() => {
-        async function fetchPets() {
-            try {
-                const response = await PetService.getAllAdoptedPets();
-
+    useEffect(() => {
+        AdoptedPetService.getAllAdoptedPets()
+            .then((response) => {
                 const adoptedPets = response.data.map(pet => ({
                     animalId: pet.animal_id,
                     animalType: pet.animal_type,
@@ -23,25 +22,27 @@ export default function AdoptedPets(){
                     imageUrl1: pet.image_url1 || '/images/default.png',
                     imageUrl2: pet.image_url2 || '/images/default.png',
                 }));
-
                 setPets(adoptedPets);
-            } catch (error) {
+                const index = Math.floor(Math.random() * adoptedPets.length);
+                setFeatured(adoptedPets[index]);
+            })
+            .catch((error) => {
                 console.error("Error fetching pets:", error);
-            }
-        }
-        fetchPets();
+            })
+
     }, []);
 
-       return (
-            <div className={styles.container}>
-                <h1 className={styles.title}>Most Recent Fur-Ever Home Finders</h1>
-                <div className={styles.petList}>
-                    {pets.length > 0 ? (
-                        pets.map(pet => <PetCard key={pet.animalId} pet={pet} />)
-                    ) : (
-                        <div>No pets available at the moment.</div>
-                    )}
-                </div>
+    return (
+        <div className={styles.container}>
+            <h1 className={styles.title}>Most Recent Fur-Ever Home Finders</h1>
+            <div className={styles.petList}>
+                {pets.length > 0 ? (
+                    // pets.map(pet => <PetCard key={pet.animalId} pet={pet} />)
+                     <PetCard key={featured.animalId} pet={featured} />
+                ) : (
+                    <div>No pets available at the moment.</div>
+                )}
             </div>
-        );
+        </div>
+    );
 }

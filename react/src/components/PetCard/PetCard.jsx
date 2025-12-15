@@ -12,7 +12,7 @@ export default function PetCard({ pet }) {
             <p>Type: {pet.animalType}</p>
             <p>Breed: {pet.breed}</p>
             <p>Age: {pet.age}</p>
-            <p>Status: {pet.adoptionStatus}</p>
+            {/* <p>Status: {pet.adoptionStatus}</p> */}
         </div>
     );
 }
