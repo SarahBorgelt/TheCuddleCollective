@@ -73,7 +73,7 @@ export default function AddOrUpdatePets() {
         color: '',
         age: '',
         name: '',
-        adoptionStatus: '',
+        adoptionStatus: 'Available',
         imageUrl: '',
         imageUrl1: '',
         imageUrl2: '',
@@ -158,8 +158,11 @@ export default function AddOrUpdatePets() {
     }
   };
 
-const handleSearch = () => {
-  if (!searchTerm) return loadPets();
+useEffect (() => {
+  if (!searchTerm){
+    loadPets();
+    return;
+  } 
   const lowerTerm = searchTerm.toLowerCase();
 
   setPetsList((prev) =>
@@ -172,7 +175,8 @@ const handleSearch = () => {
       (p.adoptionStatus && p.adoptionStatus.toLowerCase().includes(lowerTerm))
     )
   );
-};
+
+}, [searchTerm, loadPets]);
 
   if (!mode) {
     return (
@@ -202,7 +206,7 @@ const handleSearch = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className={styles.searchInput}
             />
-            <button onClick={handleSearch} className={styles.searchButton}>Search</button>
+            <button className={styles.searchButton}>Search</button>
             <button
               onClick={() => {
                 setMode(null);
