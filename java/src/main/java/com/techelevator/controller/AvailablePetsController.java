@@ -9,8 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,15 +56,36 @@ public class AvailablePetsController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping()
+    @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public AvailablePet addAvailablePet(@RequestBody AvailablePet availablePet){
-        try{
+    public AvailablePet addAvailablePet(
+            @RequestPart("data") AvailablePet availablePet,       // JSON part
+            @RequestPart(value = "imageUrl", required = false) MultipartFile image,
+            @RequestPart(value = "imageUrl1", required = false) MultipartFile image1,
+            @RequestPart(value = "imageUrl2", required = false) MultipartFile image2
+    ) {
+        try {
+            // Save files and set URLs
+            if (image != null && !image.isEmpty()) {
+                availablePet.setImageUrl(saveFile(image));
+            }
+            if (image1 != null && !image1.isEmpty()) {
+                availablePet.setImageUrl1(saveFile(image1));
+            }
+            if (image2 != null && !image2.isEmpty()) {
+                availablePet.setImageUrl2(saveFile(image2));
+            }
+
+            // Save pet to DB
             return availablePetDao.addPet(availablePet);
-        } catch(DaoException e){
+
+        } catch (DaoException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save files", e);
         }
     }
+
 
     @GetMapping("/addOrUpdatePets")
     @PreAuthorize("isAuthenticated()")
@@ -72,4 +99,25 @@ public class AvailablePetsController {
         }
         return availablePets;
     }
+
+    private static final String UPLOAD_DIR = "uploads/";
+
+    private String saveFile(MultipartFile file) throws IOException {
+        // Make folder if it doesn't exist
+        Path uploadPath = Paths.get(UPLOAD_DIR);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        // Generate a unique filename
+        String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        Path filePath = uploadPath.resolve(filename);
+
+        // Save the file to disk
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // Return the URL/path for frontend
+        return "/" + UPLOAD_DIR + filename;
+    }
+
 }

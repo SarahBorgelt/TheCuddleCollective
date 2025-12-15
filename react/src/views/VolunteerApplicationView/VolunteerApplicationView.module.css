@@ -1,0 +1,79 @@
+.volunteerContainer {
+     background-color: #B2CBF2; 
+     min-height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     padding: 20px;
+     font-family: Arial, sans-serif;
+}
+
+.volunteerFormWrapper {
+     background-color: #FFF8E7; 
+     padding: 40px;
+     border-radius: 12px;
+     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+     max-width: 500px;
+     width: 100%;
+}
+
+.heading {
+     text-align: center;
+     color: #092C4C;
+     margin-bottom: 30px;
+}
+
+.formGroup {
+     display: flex;
+     flex-direction: column; 
+     align-items: flex-start; 
+     margin-bottom: 20px;
+     width: 100%;
+}
+
+.label {
+     margin-bottom: 5px;
+     color: #333333; 
+     font-weight: bold;
+     text-align: left;
+}
+
+.input {
+     width: 100%;
+     padding: 10px;
+     border-radius: 6px;
+     border: 1px solid #CCCCCC;
+     font-size: 16px;
+     outline: none;
+}
+
+.radioGroup {
+     display: flex;
+     justify-content: space-between;
+     margin-bottom: 20px;
+     width: 100%;
+}
+
+.radioLabel {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     color: #333333;
+}
+
+.submitButton {
+     width: 100%;
+     padding: 12px;
+     background-color: #DF7234; 
+     color: white;
+     border: none;
+     border-radius: 8px;
+     font-size: 16px;
+     font-weight: bold;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+     background-color: #D34F00; 
+}
