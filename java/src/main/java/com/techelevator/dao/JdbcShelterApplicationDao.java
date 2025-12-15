@@ -19,7 +19,7 @@ public class JdbcShelterApplicationDao implements ShelterApplicationDao {
 
     @Override
     public ShelterApplication findById(int applicationId) {
-        String sql = "SELECT volunteer_application_id, first_name, last_name, email " +
+        String sql = "SELECT volunteer_application_id, first_name, last_name, email, phone_number, volunteer_application_status " +
                 "FROM volunteer_applications WHERE volunteer_application_id = ?";
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, applicationId);
@@ -33,7 +33,7 @@ public class JdbcShelterApplicationDao implements ShelterApplicationDao {
     @Override
     public List<ShelterApplication> findAllPending() {
         String sql = "SELECT volunteer_application_id, first_name, last_name, email, phone_number, volunteer_application_status " +
-                "FROM volunteer_applications WHERE volunteer_application_status = 'pending'";;
+                "FROM volunteer_applications WHERE volunteer_application_status = 'pending'";
 
         List<ShelterApplication> apps = new ArrayList<>();
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql);
@@ -66,13 +66,13 @@ public class JdbcShelterApplicationDao implements ShelterApplicationDao {
     @Override
     public void save(ShelterApplication app) {
         String sql = """
-            INSERT INTO volunteer_applications 
+            INSERT INTO volunteer_applications
             (first_name, last_name, email, phone_number, volunteer_application_status)
             VALUES (?, ?, ?, ?, 'pending')
             RETURNING volunteer_application_id
             """;
 
-        Integer newId = jdbcTemplate.queryForObject(sql, Integer.class,
+        int newId = jdbcTemplate.queryForObject(sql, Integer.class,
                 app.getFirstName(),
                 app.getLastName(),
                 app.getEmail(),
@@ -91,6 +91,8 @@ public class JdbcShelterApplicationDao implements ShelterApplicationDao {
         app.setFirstName(rs.getString("first_name"));
         app.setLastName(rs.getString("last_name"));
         app.setEmail(rs.getString("email"));
+        app.setPhoneNumber(rs.getString("phone_number"));
+        app.setStatus(rs.getString("volunteer_application_status"));
         return app;
     }
 }

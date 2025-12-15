@@ -8,7 +8,7 @@ public class Applicant extends ShelterApplication {
 //    first_name VARCHAR(100) NOT NULL,
 //    last_name VARCHAR(100) NOT NULL,
 //    email VARCHAR(150) NOT NULL UNIQUE,
-    private int volunteerApplicationId;
+    private Long volunteerApplicationId;
     @NotBlank
     private String firstName;
     @NotBlank
@@ -29,11 +29,11 @@ public class Applicant extends ShelterApplication {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getVolunteerApplicationId() {
+    public Long getVolunteerApplicationId() {
         return volunteerApplicationId;
     }
 
-    public void setVolunteerApplicationId(int volunteerApplicationId) {
+    public void setVolunteerApplicationId(Long volunteerApplicationId) {
         this.volunteerApplicationId = volunteerApplicationId;
     }
 
