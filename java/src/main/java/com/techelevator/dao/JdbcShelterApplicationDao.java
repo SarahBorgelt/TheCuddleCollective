@@ -44,6 +44,19 @@ public class JdbcShelterApplicationDao implements ShelterApplicationDao {
         return apps;
     }
 
+    public String getApplicationStatus(int applicationId) {
+        ShelterApplication getByStatus = new ShelterApplication();
+        String returnStatus = "";
+        String sql = "SELECT volunteer_application_status " +
+                "FROM volunteer_applications WHERE volunteer_application_id = ?";
+
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, applicationId);
+
+        if (rs.next()) {
+            returnStatus = rs.getString("volunteer_application_status");
+        } return returnStatus;
+    }
+
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM volunteer_applications WHERE volunteer_application_id = ?";
@@ -69,6 +82,7 @@ public class JdbcShelterApplicationDao implements ShelterApplicationDao {
         app.setApplicationId(newId);
         app.setStatus("pending");
     }
+
 
 
     private ShelterApplication mapRowToApplication(SqlRowSet rs) {
