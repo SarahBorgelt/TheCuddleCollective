@@ -3,7 +3,6 @@ import VolunteerService from "../../services/VolunteerService";
 import styles from "./VolunteerDirectoryView.module.css";
 import { UserContext } from "../../context/UserContext";
 
-
 export default function VolunteerDirectory() {
   const { user } = useContext(UserContext);
 
@@ -140,13 +139,14 @@ export default function VolunteerDirectory() {
           </button>
         )}
 
-        <button
-          className={styles.deleteButton}
-          onClick={handleDelete}
-          disabled={!selectedId}
-        >
-          Delete Volunteer
-        </button>
+        {selectedId && (
+          <button
+            className={styles.deleteButton}
+            onClick={handleDelete}
+          >
+            Delete Volunteer
+          </button>
+        )}
 
         {editingId && (
           <button className={styles.cancelButton} onClick={resetForm}>

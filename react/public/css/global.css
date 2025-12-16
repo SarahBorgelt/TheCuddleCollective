@@ -46,11 +46,11 @@ main {
     width: 100%;
     height: 100vh;
     display: grid;
-    grid-template-columns: 200px 2rem 1fr;
+    grid-template-columns: 200px 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
         "header header header"
-        "nav . main"
+        "main main main"
         "footer footer footer";
 }
 
@@ -216,4 +216,5 @@ tr {
 tr:nth-child(even) {
     background-color: rgba(136, 193, 231, 0.3);
 }
+
 
