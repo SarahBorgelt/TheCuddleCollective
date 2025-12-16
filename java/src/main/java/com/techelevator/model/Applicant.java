@@ -17,6 +17,7 @@ public class Applicant extends ShelterApplication {
     private String email;
     @NotBlank
     private String phoneNumber;
+    private String inviteCode;
 
     public Applicant(){
 
@@ -67,5 +68,13 @@ public class Applicant extends ShelterApplication {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 }

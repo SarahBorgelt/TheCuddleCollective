@@ -70,7 +70,7 @@ export default function AdminApplicationsView() {
                   <td>{app.firstName} {app.lastName}</td>
                   <td>{app.email}</td>
                   <td>{app.phoneNumber}</td>
-                  <td>
+                  <td className={styles.button}>
                     <button className={styles.approveButton} onClick={() => handleApprove(app.applicationId)}>Approve</button>
                     <button className={styles.denyButton} onClick={() => handleDeny(app.applicationId)}>Deny</button>
                   </td>

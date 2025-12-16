@@ -40,10 +40,8 @@
 
 .denyButton:hover {
      background-color: #ef8585; 
-     margin-left: 10px;
 }
 
 .approveButton:hover{
     background-color: #86ad7f;
-    margin-left: 10px;
 }
