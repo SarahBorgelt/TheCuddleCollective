@@ -41,6 +41,7 @@ JdbcTemplate jdbcTemplate = new JdbcTemplate();
                 VOL_3.getFirstName(), VOL_3.getLastName(), VOL_3.getEmail());
     }
 
+// TODO: VolunteersDAO needs getVolunteersByID method to test.
 
     @Test
     public void getVolunteers_shouldReturnListOfVolunteers(){
@@ -60,9 +61,6 @@ JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
 
 //    List<ShelterVolunteer> getAllVolunteers();
-
-
-
 
 //    public ShelterVolunteer createVolunteer(ShelterVolunteer volunteer);
 //

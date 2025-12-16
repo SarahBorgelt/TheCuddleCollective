@@ -31,6 +31,8 @@ public class JdbcApplicantDaoTest extends BaseDaoTest {
             shelterAppDao = new JdbcShelterApplicationDao(jdbcTemplate);
         }
 
+    // TODO: Edit SQL Grammar in Applicant class.
+
         @Test
         void submitApplication_shouldInsertNewApplicantAndReturnNewId() {
 
@@ -40,7 +42,6 @@ public class JdbcApplicantDaoTest extends BaseDaoTest {
                     USER_1.getEmail(),
                     USER_1.getPhoneNumber()
             );
-
 
             Applicant submittedApplicant = sut.submitApplication(applicantToSubmit);
 
