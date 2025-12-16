@@ -86,7 +86,6 @@ public class JdbcAvailablePetDaoTest extends BaseDaoTest {
         assertEquals(0, result.size(), "Only one pet of breed 'pitbull' should be returned.");
        }
 
-
 //    List<AvailablePet> getAvailablePetsByColor(String Color);
 
 @Test
@@ -165,9 +164,7 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
     } // edit SQL statement in jdbc once affirmed no one is working in that class.
 
 
-
 //    AvailablePet getPetById(long petId);
-//
 
     @Test
     public void getAvailablePetsById_returnsCorrectAnimal() {
@@ -178,10 +175,8 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
     }
 
 
-
-
 //    AvailablePet addPet(AvailablePet pet);
-//
+
 //    AvailablePet updatePet(AvailablePet pet);
 //
 //    List<AvailablePet> getAllPets();

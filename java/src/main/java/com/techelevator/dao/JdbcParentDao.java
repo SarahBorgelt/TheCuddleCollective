@@ -17,7 +17,7 @@ public class JdbcParentDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
+// need to edit method SQL statement
     public Parent getParentById(long parentId) {
         Parent parentById = null;
         String sql = "SELECT first_name, last_name, phone_number, street_number\" +\n" +
@@ -31,7 +31,7 @@ public class JdbcParentDao {
         return parentById;
     }
 
-
+// need to edit method SQL statement
     public Parent addNewParent(Parent parent){
            Parent newParent = new Parent();
             String sql = "INSERT INTO parent (first_name, last_name, phone_number, street_number" +
