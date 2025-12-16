@@ -1,10 +1,48 @@
+.container {
+     max-width: 900px;
+     margin: 0 auto;
+     padding: 20px;
+     font-family: 'Arial', sans-serif;
+}
+
 .welcome {
      text-align: center;
+     font-size: 3rem;
+     color: #2c3e50;
+     margin-top: 2rem;
 }
 
 .homePageText {
-     font-size: 20px;
-     color: #333;
-     margin-top: 20px;
-     margin-left: 10vh;
+     font-size: 1.2rem;
+     color: #555;
+     margin: 20px auto;
+     line-height: 1.7;
+     text-align: left;
+     max-width: 800px;
+}
+
+.homePageImage {
+     display: block;
+     margin: auto;
+     max-width: 100%;
+     border-radius: 15px;
+}
+
+.callToAction {
+     display: block;
+     font-style: normal;
+     margin: 30px auto;
+     color: #fff;
+     background-color: #FF8C42; 
+     padding: 15px 30px;
+     border-radius: 25px;
+     font-weight: bold;
+     font-size: 1.2rem;
+     text-align: center;
+     cursor: pointer;
+}
+
+.callToAction:hover {
+     background-color: #ff7033;
+     transform: translateY(-3px);
 }
