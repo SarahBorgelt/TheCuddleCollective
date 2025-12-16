@@ -3,12 +3,14 @@
 import styles from './HomeView.module.css';
 import animalsImg from '../../assets/AnimalsForAdoption.png';
 import { useNavigate } from 'react-router-dom';
+import FamilyWithPets from '../../assets/FamilyWithPets.jpg'
 
 export default function HomeView() {
   const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
+      <img src={FamilyWithPets} className={styles.FamilyWithPets}/>
       <h1 className={styles.welcome}>Welcome to the Cuddle Collective</h1>
       {/* <br />
       <h2>Recently Adopted Pets:

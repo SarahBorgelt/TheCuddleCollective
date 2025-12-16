@@ -28,11 +28,9 @@ export default function App() {
         <header id ="app-header">
           <Header/>
         </header>
-
           <nav id="main-nav">
             <MainNav />
           </nav>
-
           <main id="main-content">
             <Routes>
               <Route path="/" element={<HomeView />} />
