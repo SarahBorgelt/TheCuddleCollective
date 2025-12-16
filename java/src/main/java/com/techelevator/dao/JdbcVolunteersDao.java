@@ -2,10 +2,12 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.ShelterVolunteer;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,23 +64,27 @@ public class JdbcVolunteersDao implements VolunteerDao{
     }
 
     @Override
-    public void update(ShelterVolunteer volunteer) {
+    public ShelterVolunteer update(ShelterVolunteer volunteer) {
+        try {
+            String sql = "UPDATE volunteers " +
+                    "SET first_name = ?, last_name = ?, email = ?, username = ?, " +
+                    "password_hash = ?, temp_password_active = ?, first_login = ? " +
+                    "WHERE volunteer_id = ?";
 
-        String sql = "UPDATE volunteers " +
-                "SET first_name = ?, last_name = ?, email = ?, username = ?, " +
-                "password_hash = ?, temp_password_active = ?, first_login = ? " +
-                "WHERE volunteer_id = ?";
-
-        jdbcTemplate.update(sql,
-                volunteer.getFirstName(),
-                volunteer.getLastName(),
-                volunteer.getEmail(),
-                volunteer.getUsername(),
-                volunteer.getPasswordHash(),
-                volunteer.isTemporaryPasswordActive(),
-                volunteer.isFirstLogin(),
-                volunteer.getVolunteerId()
-        );
+            jdbcTemplate.update(sql,
+                    volunteer.getFirstName(),
+                    volunteer.getLastName(),
+                    volunteer.getEmail(),
+                    volunteer.getUsername(),
+                    volunteer.getPasswordHash(),
+                    volunteer.isTemporaryPasswordActive(),
+                    volunteer.isFirstLogin(),
+                    volunteer.getVolunteerId()
+            );
+            return volunteer;
+        } catch (DaoException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to update volunteer ", e);
+        }
     }
 
     @Override

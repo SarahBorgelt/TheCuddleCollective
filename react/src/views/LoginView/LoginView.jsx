@@ -45,10 +45,10 @@ export default function LoginView() {
   }
 
   return (
-    <div id="view-login">
+    <div id="view-login" className={styles.viewLogin}>
       <h2>Log in</h2>
 
-      <Notification notification={notification} clearNotification={() => setNotification(null)} />
+      <Notification className={styles.notificationWrapper} notification={notification} clearNotification={() => setNotification(null)} />
 
       <form onSubmit={handleSubmit}>
 

@@ -13,5 +13,5 @@ public interface VolunteerDao {
 
     ShelterVolunteer findByUsername(String username);
 
-    void update(ShelterVolunteer v);
+    ShelterVolunteer update(ShelterVolunteer volunteer);
 }
