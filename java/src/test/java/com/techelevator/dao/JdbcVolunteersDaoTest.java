@@ -41,7 +41,6 @@ JdbcTemplate jdbcTemplate = new JdbcTemplate();
                 VOL_3.getFirstName(), VOL_3.getLastName(), VOL_3.getEmail());
     }
 
-// TODO: VolunteersDAO needs getVolunteersByID method to test.
 
     @Test
     public void getVolunteers_shouldReturnListOfVolunteers(){
@@ -49,24 +48,6 @@ JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         assertNotNull(volunteers);
         assertEquals(3, volunteers.size(), "Should retrieve all 3 volunteers inserted in setup.");
-
-//        ShelterVolunteer sarah = sut.getAllVolunteers(VOL_2.getVolunteerId());
-
-//        assertNotNull(sarah, "Sarah should populate");
-//        assertEquals(VOL_2.getFirstName(), sarah.getFirstName());
-//        assertEquals(VOL_2.getLastName(), sarah.getLastName());
-//        assertEquals(VOL_2.getEmail(), sarah.getEmail());
     }
     }
-
-
-//    List<ShelterVolunteer> getAllVolunteers();
-
-//    public ShelterVolunteer createVolunteer(ShelterVolunteer volunteer);
-//
-//    boolean deleteVolunteer(int volunteerId);
-//
-//    ShelterVolunteer findByUsername(String username);
-//
-//    void update(ShelterVolunteer v);
 

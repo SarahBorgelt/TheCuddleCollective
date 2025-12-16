@@ -161,8 +161,7 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
         assertEquals(2, result.size(), "Two animals are available in the database.");
         AvailablePet actualPet = result.get(0);
         assertEquals(PET_3.getAdoptionStatus(), actualPet.getAdoptionStatus(), "status should match.");
-    } // edit SQL statement in jdbc once affirmed no one is working in that class.
-
+    }
 
 //    AvailablePet getPetById(long petId);
 
@@ -175,17 +174,6 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
     }
 
 
-//    AvailablePet addPet(AvailablePet pet);
-
-//    AvailablePet updatePet(AvailablePet pet);
-//
-//    List<AvailablePet> getAllPets();
-//
-//    List<AvailablePet> getAllAdoptedPets();
-//
-//    void updatePetToAdopted(AvailablePet pet, int parent_id);
-//
-//    List<AvailablePet> getAllPetsForUpdates();
 }
 
 
