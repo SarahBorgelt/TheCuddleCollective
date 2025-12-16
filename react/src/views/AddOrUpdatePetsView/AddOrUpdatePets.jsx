@@ -101,10 +101,10 @@ export default function AddOrUpdatePets() {
     animal_age: Number(data.age),
     animal_name: data.name,
     parent_id: data.parentId,
-    adoption_status: data.adoptionStatus,
+    adoption_status: data.adoptionStatus.toLowerCase(),
     image_url: data.imageUrl,
-    image_url1: data.imageUrl1,
-    image_url2: data.imageUrl2,
+    image_url1: data.imageUrl1 || null,
+    image_url2: data.imageUrl2 || null,
   });
 
   const handleSubmit = async (e) => {

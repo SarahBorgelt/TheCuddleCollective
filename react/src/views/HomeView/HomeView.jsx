@@ -1,8 +1,11 @@
 // import AdoptedPetService from '../../services/AdoptedPetService';
 // import AdoptedPetCarousel from '../../components/AdoptedPetCarousel/AdoptedPetCarousel'
 import styles from './HomeView.module.css';
+import animalsImg from '../../assets/AnimalsForAdoption.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomeView() {
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
@@ -17,7 +20,9 @@ export default function HomeView() {
         and connect with shelters in their area. We also make it easy for animal lovers to get involved 
         — from signing up to volunteer at local shelters to supporting rescue efforts across the community. 
         Together, we’re creating a world where every pet is welcomed, cared for, and truly home — 
-        fur good.</p>  
+        fur good.</p>
+      <img className={styles.homePageImage}src={animalsImg} alt="A group of pets waiting for their new owner"/>
+      <button className={styles.callToAction} onClick={() => navigate('/availablePets')}>Are you ready to help us find our fur-ever home?</button>
     </div>
   
   );
