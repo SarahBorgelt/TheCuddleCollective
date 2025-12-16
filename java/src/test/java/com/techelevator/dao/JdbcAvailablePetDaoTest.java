@@ -181,7 +181,7 @@ public void getAvailablePetsByColor_returnsCorrectAmount() {
 
 
 //    AvailablePet addPet(AvailablePet pet);
-//
+
 //    AvailablePet updatePet(AvailablePet pet);
 //
 //    List<AvailablePet> getAllPets();
