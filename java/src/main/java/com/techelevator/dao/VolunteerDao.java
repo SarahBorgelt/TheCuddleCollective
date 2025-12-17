@@ -11,7 +11,5 @@ public interface VolunteerDao {
 
     boolean deleteVolunteer(int volunteerId);
 
-    ShelterVolunteer findByUsername(String username);
-
     ShelterVolunteer update(ShelterVolunteer volunteer);
 }

@@ -1,36 +1,26 @@
 import axios from "axios";
 
-export default{
+const VolunteerService = {
 
-    getAllVolunteers(){
-        const token = localStorage.getItem('token');
-        return axios.get("/volunteer/directory", {
-            headers: {Authorization: `Bearer ${token}`}
-        });
-},
+    getAllVolunteers() {
+    return axios.get("/volunteer/directory");
+  },
 
-    addNewVolunteer(volunteer){
-        const token = localStorage.getItem('token');
-        return axios.post("/volunteers", volunteer, {
-            headers: {Authorization: `Bearer ${token}`}
-        });
-},
+  deleteFromVolunteer(volunteerId) {
+    return axios.delete(`/volunteers/${volunteerId}`);
+  },
 
-    deleteFromVolunteer(volunteer_id){
-        const token = localStorage.getItem('token');
-        return axios.delete(`/volunteers/${volunteer_id}`, {
-            headers: {Authorization: `Bearer ${token}`}
-        });
-},
+  updateVolunteer(id, volunteerData) {
+    return axios.put(`/volunteers/${id}`, volunteerData);
+  },
 
-    submitApplication(applicant) {
-        return axios.post("/volunteer/apply", applicant);
-},
+  submitApplication(applicant) {
+    return axios.post("/volunteer/apply", applicant);
+  },
 
-    updateVolunteer(id, volunteerData) {
-        const token = localStorage.getItem("token");
-        return axios.put(`/volunteers/${id}`, volunteerData, {
-        headers: { Authorization: `Bearer ${token}` },
-        });
-    }
-}
+  getApprovedApplicationsWithCodes() {
+    return axios.get("/admin/applications/approved");
+  }
+};
+
+export default VolunteerService;

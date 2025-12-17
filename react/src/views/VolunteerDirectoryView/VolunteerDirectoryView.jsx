@@ -4,44 +4,45 @@ import styles from "./VolunteerDirectoryView.module.css";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 
+
 export default function VolunteerDirectory() {
   const { user } = useContext(UserContext);
-
+  const [approvedApps, setApprovedApps] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "" });
   const [editingId, setEditingId] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-  const [inviteCodes, setInviteCodes] = useState([]);
 
-
-  const fetchVolunteers = () => {
+const fetchVolunteers = async () => {
+  try {
     setLoading(true);
-    VolunteerService.getAllVolunteers()
-      .then((res) => {
-        setVolunteers(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Failed to load volunteers.");
-        setLoading(false);
-      });
-  };
+    const volunteersRes = await VolunteerService.getAllVolunteers();
+    let volunteersData = volunteersRes.data;
+    const approvedRes = await VolunteerService.getApprovedApplicationsWithCodes();
+    const approvedAppsData = approvedRes.data;
+    volunteersData = volunteersData.map(v => {
+      const matchedApp = approvedAppsData.find(app => app.email === v.email);
+      return {
+        ...v,
+        inviteCode: matchedApp ? matchedApp.inviteCode : null
+      };
+    });
+    setVolunteers(volunteersData);
+    setLoading(false);
+  } catch (err) {
+    console.error("Failed to fetch volunteers:", err);
+    setError("Failed to load volunteers.");
+    setLoading(false);
+  }
+};
+
+
 
 useEffect(() => {
-  if (!user) return;
   fetchVolunteers();
-  if (user.authorities?.includes('ROLE_ADMIN')) {
-    const token = localStorage.getItem('token');
-    axios.get('/admin/applications/approved', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => setInviteCodes(res.data))
-      .catch(err => console.error('Failed to load invite codes', err));
-  }
-}, [user]);
+}, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,25 +54,26 @@ useEffect(() => {
     setSelectedId(null);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (!user || !editingId) return;
-    VolunteerService.updateVolunteer(editingId, formData)
-      .then(() => {
-        fetchVolunteers();
-        resetForm();
-      })
-      .catch((err) => console.error("Update failed:", err.response || err));
+    try {
+      await VolunteerService.updateVolunteer(editingId, formData);
+      fetchVolunteers();
+      resetForm();
+    } catch (err) {
+      console.error("Update failed:", err.response || err);
+    }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!user || !selectedId) return;
-    if (window.confirm("Are you sure you want to delete this volunteer?")) {
-      VolunteerService.deleteFromVolunteer(selectedId)
-        .then(() => {
-          fetchVolunteers();
-          resetForm();
-        })
-        .catch((err) => console.error("Delete failed:", err.response || err));
+    if (!window.confirm("Are you sure you want to delete this volunteer?")) return;
+    try {
+      await VolunteerService.deleteFromVolunteer(selectedId);
+      fetchVolunteers();
+      resetForm();
+    } catch (err) {
+      console.error("Delete failed:", err.response || err);
     }
   };
 
@@ -84,11 +86,6 @@ useEffect(() => {
     });
     setEditingId(volunteer.volunteerId);
   };
-
-  const getInviteCodeForVolunteer = (email) => {
-  const app = inviteCodes.find(app => app.email === email);
-  return app ? app.inviteCode : '—';
-};
 
   if (!user) return <p className={styles.message}>Loading user info...</p>;
   if (loading) return <p className={styles.message}>Loading volunteers...</p>;
@@ -128,9 +125,9 @@ useEffect(() => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-
-            {user && user.authorities?.includes('ROLE_ADMIN') && (<th>Invite Code</th>)}
-          </tr>
+{user?.authorities?.some(a => a.name === "ROLE_ADMIN") && (
+  <th>Invite Code</th>
+)}          </tr>
         </thead>
         <tbody>
           {volunteers.map((volunteer) => (
@@ -142,11 +139,10 @@ useEffect(() => {
               <td>{volunteer.firstName}</td>
               <td>{volunteer.lastName}</td>
               <td>{volunteer.email}</td>
-              {user && user.authorities?.includes('ROLE_ADMIN') && (
-        <td>
-          <code>{getInviteCodeForVolunteer(volunteer.email)}</code>
-        </td>
-      )}
+            {user?.authorities?.some(a => a.name === "ROLE_ADMIN") && (
+              <td><code>{volunteer.inviteCode || "—"}</code></td>
+            )}
+
             </tr>
           ))}
         </tbody>

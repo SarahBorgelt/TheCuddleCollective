@@ -11,7 +11,7 @@ import VolunteerDirectory from './views/VolunteerDirectoryView/VolunteerDirector
 import AddOrUpdatePets from './views/AddOrUpdatePetsView/AddOrUpdatePets';
 import FirstLoginView from './views/FirstLoginView/FirstLoginView';
 import AdminApplicationsView from './views/AdminApplicationView/AdminApplicationView';
-
+import VolunteerActivationView from './views/VolunteerActivationView/VolunteerActivationView';
 import MainNav from './components/MainNav/MainNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer/Footer';
@@ -48,6 +48,15 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <UserProfileView />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/activate-volunteer"
+              element={
+                <ProtectedRoute>
+                  <VolunteerActivationView />
                 </ProtectedRoute>
               }
             />

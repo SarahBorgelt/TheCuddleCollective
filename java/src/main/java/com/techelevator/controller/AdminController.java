@@ -30,8 +30,8 @@ public class AdminController {
     }
 
     @PostMapping("/{id}/approve")
-    public ShelterVolunteer approveApplication(@PathVariable int id) {
-        return approvalService.approve(id);
+    public void approveApplication(@PathVariable int id) {
+        approvalService.approve(id);
     }
 
     @PostMapping("/{id}/deny")
