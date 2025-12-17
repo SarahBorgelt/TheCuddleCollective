@@ -42,7 +42,6 @@ export default function App() {
               <Route path="/first-login" element={<FirstLoginView />} />
               <Route path="/logout" element={<LogoutView />} />
               <Route path="/volunteer/apply" element={<VolunteerApplicationForm />} />
-              <Route path="/admin/applications" element={<AdminApplicationsView />} />
 
             <Route
               path="/userProfile"
@@ -76,6 +75,15 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <AddOrUpdatePets />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/applications"
+              element={
+                <ProtectedRoute>
+                  <AdminApplicationsView />
                 </ProtectedRoute>
               }
             />

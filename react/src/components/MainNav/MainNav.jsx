@@ -5,6 +5,7 @@ import styles from './MainNav.module.css';
 
 export default function MainNav() {
   const { user } = useContext(UserContext);
+  const isAdmin = user?.authorities?.some(auth => auth.name === "ROLE_admin");
 
   return (
     <aside className={styles.sidebar}>
@@ -61,6 +62,15 @@ export default function MainNav() {
               isActive ? styles.activeLink : styles.link}>
                 Volunteer Directory
             </NavLink>
+
+            {isAdmin && (
+              <NavLink
+                to="/admin/applications"
+                className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+              >
+                Volunteer Applications
+              </NavLink>
+            )}
 
             <NavLink
               to="/userProfile"
