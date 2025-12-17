@@ -70,6 +70,8 @@ CREATE TABLE volunteer_applications(
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     phone_number VARCHAR(12) NOT NULL UNIQUE,
+	invite_code VARCHAR(20),
+	code_used BOOLEAN,
     volunteer_application_status volunteer_application_status_enum NOT NULL
 );
 

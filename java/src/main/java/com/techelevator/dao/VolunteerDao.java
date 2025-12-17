@@ -14,4 +14,6 @@ public interface VolunteerDao {
     ShelterVolunteer findByUsername(String username);
 
     ShelterVolunteer update(ShelterVolunteer volunteer);
+
+    public void applyVolunteerCode(String username, String code);
 }

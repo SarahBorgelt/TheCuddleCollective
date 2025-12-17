@@ -38,4 +38,9 @@ public class AdminController {
     public void denyApplication(@PathVariable int id) {
         approvalService.deny(id);
     }
+
+    @GetMapping("/approved")
+    public List<ShelterApplication> approvedWithCodes(){
+        return applicationDao.findAllApprovedWithInviteCode();
+    }
 }

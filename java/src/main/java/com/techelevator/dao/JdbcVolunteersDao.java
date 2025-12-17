@@ -5,7 +5,6 @@ import com.techelevator.model.ShelterVolunteer;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -95,6 +94,21 @@ public class JdbcVolunteersDao implements VolunteerDao{
         return null;  // username not found
     }
 
+    public void applyVolunteerCode(String username, String code) {
+
+        Integer userId = jdbcTemplate.queryForObject(
+                "SELECT user_id FROM users WHERE username = ?",
+                Integer.class,
+                username
+        );
+
+        jdbcTemplate.update("""
+        UPDATE users
+        SET role = 'ROLE_VOLUNTEER',
+            first_login = false
+        WHERE user_id = ?
+        """, userId);
+    }
 
     private ShelterVolunteer mapRowToVolunteer(SqlRowSet rs){
         ShelterVolunteer shelterVolunteer = new ShelterVolunteer();
