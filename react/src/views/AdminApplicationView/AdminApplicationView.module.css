@@ -45,3 +45,7 @@
 .approveButton:hover{
     background-color: #86ad7f;
 }
+
+.button{
+    margin-left: 10px;
+}

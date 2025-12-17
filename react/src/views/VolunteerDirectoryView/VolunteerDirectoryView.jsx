@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import VolunteerService from "../../services/VolunteerService";
 import styles from "./VolunteerDirectoryView.module.css";
 import { UserContext } from "../../context/UserContext";
+import axios from "axios";
 
 export default function VolunteerDirectory() {
   const { user } = useContext(UserContext);
@@ -12,6 +13,8 @@ export default function VolunteerDirectory() {
   const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "" });
   const [editingId, setEditingId] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
+  const [inviteCodes, setInviteCodes] = useState([]);
+
 
   const fetchVolunteers = () => {
     setLoading(true);
@@ -27,9 +30,18 @@ export default function VolunteerDirectory() {
       });
   };
 
-  useEffect(() => {
-    if (user) fetchVolunteers();
-  }, [user]);
+useEffect(() => {
+  if (!user) return;
+  fetchVolunteers();
+  if (user.authorities?.includes('ROLE_ADMIN')) {
+    const token = localStorage.getItem('token');
+    axios.get('/admin/applications/approved', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => setInviteCodes(res.data))
+      .catch(err => console.error('Failed to load invite codes', err));
+  }
+}, [user]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -73,6 +85,11 @@ export default function VolunteerDirectory() {
     setEditingId(volunteer.volunteerId);
   };
 
+  const getInviteCodeForVolunteer = (email) => {
+  const app = inviteCodes.find(app => app.email === email);
+  return app ? app.inviteCode : '—';
+};
+
   if (!user) return <p className={styles.message}>Loading user info...</p>;
   if (loading) return <p className={styles.message}>Loading volunteers...</p>;
   if (error) return <p className={styles.message}>{error}</p>;
@@ -111,6 +128,8 @@ export default function VolunteerDirectory() {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
+
+            {user && user.authorities?.includes('ROLE_ADMIN') && (<th>Invite Code</th>)}
           </tr>
         </thead>
         <tbody>
@@ -123,6 +142,11 @@ export default function VolunteerDirectory() {
               <td>{volunteer.firstName}</td>
               <td>{volunteer.lastName}</td>
               <td>{volunteer.email}</td>
+              {user && user.authorities?.includes('ROLE_ADMIN') && (
+        <td>
+          <code>{getInviteCodeForVolunteer(volunteer.email)}</code>
+        </td>
+      )}
             </tr>
           ))}
         </tbody>

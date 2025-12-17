@@ -9,11 +9,11 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.firstLogin) {
-    return <Navigate to="/first-login" replace />;
-  }
+if (user.firstLogin && user.roles.includes('ROLE_VOLUNTEER')) {
+  return <Navigate to="/first-login" replace />;
+}
 
-  if (adminOnly && !user.roles.includes('ROLE_ADMIN')){
+  if (adminOnly && user && !user.authorities?.includes('ROLE_ADMIN')){
     return <Navigate to="/" replace />;
   }
 
