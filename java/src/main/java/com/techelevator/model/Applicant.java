@@ -3,12 +3,7 @@ package com.techelevator.model;
 import jakarta.validation.constraints.NotBlank;
 
 public class Applicant extends ShelterApplication {
-//    volunteer_application_id SERIAL PRIMARY KEY,
-//    volunteer_id INT REFERENCES volunteers(volunteer_id),
-//    first_name VARCHAR(100) NOT NULL,
-//    last_name VARCHAR(100) NOT NULL,
-//    email VARCHAR(150) NOT NULL UNIQUE,
-    private Long volunteerApplicationId;
+    private int volunteerApplicationId;
     @NotBlank
     private String firstName;
     @NotBlank
@@ -17,6 +12,8 @@ public class Applicant extends ShelterApplication {
     private String email;
     @NotBlank
     private String phoneNumber;
+    private String inviteCode;
+    private String status;
 
     public Applicant(){
 
@@ -29,11 +26,11 @@ public class Applicant extends ShelterApplication {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getVolunteerApplicationId() {
+    public int getVolunteerApplicationId() {
         return volunteerApplicationId;
     }
 
-    public void setVolunteerApplicationId(Long volunteerApplicationId) {
+    public void setVolunteerApplicationId(int volunteerApplicationId) {
         this.volunteerApplicationId = volunteerApplicationId;
     }
 
@@ -67,5 +64,23 @@ public class Applicant extends ShelterApplication {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    @Override
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

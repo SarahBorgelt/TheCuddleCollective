@@ -2,24 +2,29 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Notification from '../../components/Notification/Notification';
 import ProtectedRoute from '../../components/ProtectedRoute';
+import styles from './AdminApplicationView.module.css';
 
-export default function AdminApplicationView() {
+export default function AdminApplicationsView() {
   const [applications, setApplications] = useState([]);
   const [notification, setNotification] = useState(null);
 
-  // Fetch pending applications
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
-    axios.get('/admin/applications/pending')
+    axios.get('/admin/applications/pending', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(res => setApplications(res.data))
       .catch(err => {
         setNotification({ type: 'error', message: 'Failed to fetch applications.' });
       });
-  }, []);
+  }, [token]);
 
-  // Approve an application
+
   const handleApprove = (id) => {
-    axios.post(`/admin/applications/${id}/approve`)
-      .then(() => {
+    axios.post(`/admin/applications/${id}/approve`, null, {
+      headers: { Authorization: `Bearer ${token}` }
+    })      .then(() => {
         setNotification({ type: 'success', message: 'Application approved!' });
         setApplications(applications.filter(app => app.applicationId !== id));
       })
@@ -28,10 +33,10 @@ export default function AdminApplicationView() {
       });
   };
 
-  // Deny an application
   const handleDeny = (id) => {
-    axios.post(`/admin/applications/${id}/deny`)
-      .then(() => {
+    axios.post(`/admin/applications/${id}/deny`, null, {
+      headers: { Authorization: `Bearer ${token}` }
+    })      .then(() => {
         setNotification({ type: 'success', message: 'Application denied.' });
         setApplications(applications.filter(app => app.applicationId !== id));
       })
@@ -42,7 +47,7 @@ export default function AdminApplicationView() {
 
   return (
     <ProtectedRoute adminOnly={true}>
-      <div>
+      <div className={styles.formGroup}>
         <h2>Pending Volunteer Applications</h2>
 
         <Notification notification={notification} clearNotification={() => setNotification(null)} />
@@ -59,15 +64,15 @@ export default function AdminApplicationView() {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={styles.applicationContainer}>
               {applications.map(app => (
                 <tr key={app.applicationId}>
                   <td>{app.firstName} {app.lastName}</td>
                   <td>{app.email}</td>
                   <td>{app.phoneNumber}</td>
-                  <td>
-                    <button onClick={() => handleApprove(app.applicationId)}>Approve</button>
-                    <button onClick={() => handleDeny(app.applicationId)}>Deny</button>
+                  <td className={styles.button}>
+                    <button className={styles.approveButton} onClick={() => handleApprove(app.applicationId)}>Approve</button>
+                    <button className={styles.denyButton} onClick={() => handleDeny(app.applicationId)}>Deny</button>
                   </td>
                 </tr>
               ))}

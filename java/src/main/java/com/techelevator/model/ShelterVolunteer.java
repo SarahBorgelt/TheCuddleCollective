@@ -29,8 +29,8 @@ public class ShelterVolunteer {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.firstLogin = true;
-        this.temporaryPasswordActive = false;
+        this.firstLogin = firstLogin;
+        this.temporaryPasswordActive = temporaryPasswordActive;
     }
 
     public String getVolunteerId() {
@@ -89,7 +89,7 @@ public class ShelterVolunteer {
         this.firstLogin = firstLogin;
     }
 
-    public Object getUsername() {
+    public String getUsername() {
         return username;
     }
 

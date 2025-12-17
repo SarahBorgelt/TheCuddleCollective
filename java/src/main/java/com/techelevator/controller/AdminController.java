@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/admin/applications")
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     private final ShelterApplicationDao applicationDao;
@@ -36,5 +37,10 @@ public class AdminController {
     @PostMapping("/{id}/deny")
     public void denyApplication(@PathVariable int id) {
         approvalService.deny(id);
+    }
+
+    @GetMapping("/approved")
+    public List<ShelterApplication> approvedWithCodes(){
+        return applicationDao.findAllApprovedWithInviteCode();
     }
 }

@@ -34,7 +34,7 @@ CREATE TABLE parent(
 
 --Create table to store volunteers
 CREATE TABLE volunteers (
-    volunteer_id INT PRIMARY KEY REFERENCES users(user_id),
+    volunteer_id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE
@@ -53,9 +53,9 @@ CREATE TABLE available_pets (
     name VARCHAR(150) NOT NULL,
     parent_id int,
     adoption_status adoption_status_enum NOT NULL,
-    image_url VARCHAR(500) NOT NULL,
-    image_url1 VARCHAR(500),
-    image_url2 VARCHAR(500),
+    image_url VARCHAR(500) NOT NULL UNIQUE,
+    image_url1 VARCHAR(500) UNIQUE,
+    image_url2 VARCHAR(500) UNIQUE,
     CONSTRAINT PK_animal_id PRIMARY KEY (animal_id),
     CONSTRAINT FK_parent_id FOREIGN KEY (parent_id) REFERENCES parent(parent_id)
     );
@@ -71,6 +71,8 @@ CREATE TABLE volunteer_applications(
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     phone_number VARCHAR(12) NOT NULL UNIQUE,
+	invite_code VARCHAR(20),
+	code_used BOOLEAN,
     volunteer_application_status volunteer_application_status_enum NOT NULL
 );
 

@@ -1,0 +1,51 @@
+.applicationContainer {
+     background-color: #ff9214; 
+     outline: 3px solid #f06a1b;
+}
+
+.applicationFormWrapper {
+     background-color: #FFF8E7; 
+     padding: 40px;
+     border-radius: 12px;
+     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+     max-width: 500px;
+     width: 100%;
+}
+
+.heading {
+     text-align: center;
+     color: #092C4C;
+     margin-bottom: 30px;
+}
+
+.width {
+ margin-left: 10px;
+}
+
+.label {
+     margin-bottom: 5px;
+     color: #333333; 
+     font-weight: bold;
+     text-align: left;
+}
+
+.input {
+     width: 100%;
+     padding: 10px;
+     border-radius: 6px;
+     border: 1px solid #CCCCCC;
+     font-size: 16px;
+     outline: none;
+}
+
+.denyButton:hover {
+     background-color: #ef8585; 
+}
+
+.approveButton:hover{
+    background-color: #86ad7f;
+}
+
+.button{
+    margin-left: 10px;
+}

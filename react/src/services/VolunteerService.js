@@ -24,14 +24,7 @@ export default{
 },
 
     submitApplication(applicant) {
-        return axios.post("/volunteer/apply", null, {
-            params: {
-                firstName: applicant.firstName,
-                lastName: applicant.lastName,
-                email: applicant.email,
-                phoneNumber: applicant.phoneNumber
-            }
-        });
+        return axios.post("/volunteer/apply", applicant);
 },
 
     updateVolunteer(id, volunteerData) {
