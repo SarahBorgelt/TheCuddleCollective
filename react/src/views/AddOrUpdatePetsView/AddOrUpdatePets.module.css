@@ -1,4 +1,6 @@
-
+.htmlFor{
+     text-align: left;
+}
 .container {
      max-width: 900px;
      margin: 0 auto;
@@ -8,6 +10,7 @@
      border-radius: 12px;
      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
+
 
 .title {
      text-align: center;
