@@ -239,36 +239,36 @@ useEffect (() => {
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.row}>
             <div className={styles.field}>
-              <label htmlFor="name">Name</label>
+              <label className={styles.htmlFor} htmlFor="name">Name</label>
               <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
             </div>
             <div className={styles.field}>
-              <label htmlFor="type">Type</label>
+              <label className={styles.htmlFor} htmlFor="type">Type</label>
               <input type="text" id="type" name="type" value={formData.type} onChange={handleChange} required />
             </div>
           </div>
 
           <div className={styles.row}>
             <div className={styles.field}>
-              <label htmlFor="breed">Breed</label>
+              <label className={styles.htmlFor} htmlFor="breed">Breed</label>
               <input type="text" id="breed" name="breed" value={formData.breed} onChange={handleChange} required />
             </div>
             <div className={styles.field}>
-              <label htmlFor="color">Color</label>
+              <label className={styles.htmlFor} htmlFor="color">Color</label>
               <input type="text" id="color" name="color" value={formData.color} onChange={handleChange} required />
             </div>
           </div>
 
           <div className={styles.row}>
             <div className={styles.field}>
-              <label htmlFor="age">Age</label>
+              <label className={styles.htmlFor} htmlFor="age">Age</label>
               <input type="number" id="age" name="age" value={formData.age ?? ''} onChange={handleChange} required />
             </div>
           </div>
 
           <div className={styles.row}>
             <div className={styles.field}>
-              <label htmlFor="adoptionStatus">Adoption Status</label>
+              <label className={styles.htmlFor} htmlFor="adoptionStatus">Adoption Status</label>
               <select id="adoptionStatus" name="adoptionStatus" value={formData.adoptionStatus} onChange={handleChange}>
                 <option value="available">Available</option>
                 <option value="pending">Pending</option>
@@ -281,16 +281,10 @@ useEffect (() => {
           {['imageUrl', 'imageUrl1', 'imageUrl2'].map((img, i) => (
             <div className={styles.row} key={img}>
               <div className={styles.field}>
-                <label htmlFor={img}>{i === 0 ? 'Main Image' : `Additional Image ${i}`}</label>
+                <label className={styles.htmlFor} htmlFor={img}>{i === 0 ? 'Main Image' : `Additional Image ${i}`}</label>
                 <div className={styles.imageOptions}>
-                  <label>
-                    <input type="radio" name={`${img}_option`} checked={imageOptions[img] === 'url'} onChange={() => setImageOptions(p => ({ ...p, [img]: 'url' }))} />
-                    URL
-                  </label>
-                  <label>
-                    <input type="radio" name={`${img}_option`} checked={imageOptions[img] === 'upload'} onChange={() => setImageOptions(p => ({ ...p, [img]: 'upload' }))} />
-                    Upload
-                  </label>
+                  <p>(Please enter the image url below)</p>
+  
                 </div>
 
                 {imageOptions[img] === 'url' ? (
