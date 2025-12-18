@@ -50,6 +50,7 @@ export default function MainNav() {
               </NavLink>
             )}
 
+            {(isAdmin || isVolunteer) && (
             <NavLink
               to="/addOrUpdatePets"
               className={({ isActive }) =>
@@ -58,7 +59,8 @@ export default function MainNav() {
             >
               Add or Update Pets
             </NavLink>
-
+             )}
+{(isAdmin || isVolunteer) && (
             <NavLink
               to="/petparents"
               className={({ isActive }) =>
@@ -67,11 +69,13 @@ export default function MainNav() {
             >
               Pet Parents
             </NavLink>
-
+)}
+            {(isAdmin || isVolunteer) && (
             <NavLink to="/volunteer/directory" className={({isActive})=>
               isActive ? styles.activeLink : styles.link}>
                 Volunteer Directory
             </NavLink>
+            )}
 
             {isAdmin && (
               <NavLink
