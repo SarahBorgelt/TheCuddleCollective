@@ -5,7 +5,8 @@ import styles from './MainNav.module.css';
 
 export default function MainNav() {
   const { user } = useContext(UserContext);
-  const isAdmin = user?.authorities?.some(auth => auth.name === "ROLE_admin");
+  const isAdmin = user?.authorities?.some(auth => auth.name == "ROLE_ADMIN");
+  const isVolunteer = user?.authorities?.some(auth => auth.name == "ROLE_VOLUNTEER");
 
   return (
     <aside className={styles.sidebar}>
@@ -40,6 +41,15 @@ export default function MainNav() {
 
         {user ? (
           <>
+              {(!isAdmin && !isVolunteer) && (
+              <NavLink
+                to="/activate-volunteer"
+                className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+              >
+                Activate Volunteer Account
+              </NavLink>
+            )}
+
             <NavLink
               to="/addOrUpdatePets"
               className={({ isActive }) =>

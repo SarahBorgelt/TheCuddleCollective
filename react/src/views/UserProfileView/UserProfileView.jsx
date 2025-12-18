@@ -4,7 +4,7 @@ import styles from './UserProfileView.module.css';
 
 export default function UserProfileView() {
   const { user } = useContext(UserContext);
-  const isAdmin = user?.authorities?.some(auth => auth.name === "ROLE_admin");
+  const isAdmin = user?.authorities?.some(auth => auth.name == "ROLE_ADMIN");
 
   return (
     <div className={styles.userProfile}>
