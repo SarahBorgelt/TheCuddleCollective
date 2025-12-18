@@ -1,51 +1,89 @@
 .applicationContainer {
-     background-color: #ff9214; 
-     outline: 3px solid #f06a1b;
+  background-color: #fff4e6;            
+  outline: none;                          
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
 }
 
 .applicationFormWrapper {
-     background-color: #FFF8E7; 
-     padding: 40px;
-     border-radius: 12px;
-     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-     max-width: 500px;
-     width: 100%;
+  background-color: #FFF8E7;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;                        
 }
 
 .heading {
-     text-align: center;
-     color: #092C4C;
-     margin-bottom: 30px;
+  text-align: center;
+  color: #092C4C;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
 }
 
 .width {
- margin-left: 10px;
+  margin-left: 0.5rem;
 }
 
 .label {
-     margin-bottom: 5px;
-     color: #333333; 
-     font-weight: bold;
-     text-align: left;
+  margin-bottom: 6px;
+  color: #333;
+  font-weight: 600;
+  text-align: left;
 }
 
 .input {
-     width: 100%;
-     padding: 10px;
-     border-radius: 6px;
-     border: 1px solid #CCCCCC;
-     font-size: 16px;
-     outline: none;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.input:focus {
+  border-color: #92B6F0;
+  box-shadow: 0 0 6px rgba(146, 182, 240, 0.45);
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.approveButton {
+  background-color: #7FAE73;
+  color: #fff;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.15s;
+}
+
+.approveButton:hover {
+  background-color: #6A9B61;
+  transform: translateY(-1px);
+}
+
+.denyButton {
+  background-color: #E58A8A;
+  color: #fff;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.15s;
 }
 
 .denyButton:hover {
-     background-color: #ef8585; 
-}
-
-.approveButton:hover{
-    background-color: #86ad7f;
-}
-
-.button{
-    margin-left: 10px;
+  background-color: #D96E6E;
+  transform: translateY(-1px);
 }

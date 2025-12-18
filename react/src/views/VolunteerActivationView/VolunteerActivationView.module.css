@@ -1,0 +1,70 @@
+.activationContainer {
+  background-color: #B2CBF2;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.activationCard {
+  background-color: #FFFFFF;
+  padding: 2.5rem;
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 420px;
+}
+
+.activationTitle {
+  text-align: center;
+  color: #092B4C;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.activationForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.activationLabel {
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.activationInput {
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.activationInput:focus {
+  border-color: #92B6F0;
+  box-shadow: 0 0 6px rgba(146, 182, 240, 0.5);
+}
+
+.activateButton {
+  margin-top: 0.5rem;
+  background-color: #DF7234;
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.activateButton:hover {
+  background-color: #D34F00;
+}

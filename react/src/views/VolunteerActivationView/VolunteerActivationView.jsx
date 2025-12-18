@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import styles from './VolunteerActivationView.module.css';
 import Notification from "../../components/Notification/Notification";
 
 export default function VolunteerActivationView() {
@@ -32,18 +33,20 @@ export default function VolunteerActivationView() {
   };
 
   return (
-    <div>
-      <h2>Activate Volunteer Access</h2>
+    <div className={styles.activationContainer}>
+    <div className={styles.activationCard}>
+      <h2 className={styles.activationTitle}>Activate Volunteer Access</h2>
 
       <Notification
         notification={notification}
         clearNotification={() => setNotification(null)}
       />
 
-      <form onSubmit={submitCode}>
-        <label>
+      <form className={styles.activationForm} onSubmit={submitCode}>
+        <label className={styles.activationLabel}>
           Volunteer Code
           <input
+          className={styles.activationInput}
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value)}
@@ -51,8 +54,9 @@ export default function VolunteerActivationView() {
           />
         </label>
 
-        <button type="submit">Activate</button>
+        <button className={styles.activateButton} type="submit">Activate</button>
       </form>
     </div>
+  </div>
   );
 }

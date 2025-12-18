@@ -48,7 +48,8 @@ export default function AdminApplicationsView() {
   return (
     <ProtectedRoute adminOnly={true}>
       <div className={styles.formGroup}>
-        <h2>Pending Volunteer Applications</h2>
+        <div className={styles.applicationFormWrapper}>
+        <h2 className={styles.heading}>Pending Volunteer Applications</h2>
 
         <Notification notification={notification} clearNotification={() => setNotification(null)} />
 
@@ -79,6 +80,7 @@ export default function AdminApplicationsView() {
             </tbody>
           </table>
         )}
+        </div>
       </div>
     </ProtectedRoute>
   );
