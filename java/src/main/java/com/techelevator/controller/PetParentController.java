@@ -32,13 +32,13 @@ public class PetParentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VOLUNTEER')")
     @PostMapping("/addPetParent")
     public PetParent addPetParent(@RequestBody PetParent parent) {
         return repository.save(parent);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VOLUNTEER')")
     @PutMapping("/{id}")
     public ResponseEntity<PetParent> updatePetParent(@PathVariable Integer id, @RequestBody PetParent parent) {
         if (!repository.existsById(id)) {
