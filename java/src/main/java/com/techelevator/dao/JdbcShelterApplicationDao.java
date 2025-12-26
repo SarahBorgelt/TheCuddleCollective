@@ -83,6 +83,36 @@ public class JdbcShelterApplicationDao implements ShelterApplicationDao {
         app.setStatus("pending");
     }
 
+    public List<ShelterApplication> findAllApprovedWithInviteCode() {
+        String sql = """
+        SELECT volunteer_application_id,
+               first_name,
+               last_name,
+               email,
+               phone_number,
+               invite_code,
+               volunteer_application_status
+        FROM volunteer_applications
+        WHERE volunteer_application_status = 'approved'
+        """;
+
+        List<ShelterApplication> apps = new ArrayList<>();
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql);
+
+        while (rs.next()) {
+            ShelterApplication app = mapRowToApplication(rs);
+            app.setInviteCode(rs.getString("invite_code"));
+            apps.add(app);
+        }
+
+        return apps;
+    }
+
+    @Override
+    public void approve(int applicationId){
+        jdbcTemplate.update("UPDATE volunteer_applications SET volunteer_application_status = 'approved' WHERE volunteer_application_id = ?", applicationId);
+
+    }
 
 
     private ShelterApplication mapRowToApplication(SqlRowSet rs) {

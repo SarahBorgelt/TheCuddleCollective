@@ -5,6 +5,8 @@ import styles from './MainNav.module.css';
 
 export default function MainNav() {
   const { user } = useContext(UserContext);
+  const isAdmin = user?.authorities?.some(auth => auth.name == "ROLE_ADMIN");
+  const isVolunteer = user?.authorities?.some(auth => auth.name == "ROLE_VOLUNTEER");
 
   return (
     <aside className={styles.sidebar}>
@@ -39,6 +41,16 @@ export default function MainNav() {
 
         {user ? (
           <>
+              {(!isAdmin && !isVolunteer) && (
+              <NavLink
+                to="/activate-volunteer"
+                className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+              >
+                Activate Volunteer Account
+              </NavLink>
+            )}
+
+            {(isAdmin || isVolunteer) && (
             <NavLink
               to="/addOrUpdatePets"
               className={({ isActive }) =>
@@ -47,7 +59,8 @@ export default function MainNav() {
             >
               Add or Update Pets
             </NavLink>
-
+             )}
+{(isAdmin || isVolunteer) && (
             <NavLink
               to="/petparents"
               className={({ isActive }) =>
@@ -56,11 +69,22 @@ export default function MainNav() {
             >
               Pet Parents
             </NavLink>
-
+)}
+            {(isAdmin || isVolunteer) && (
             <NavLink to="/volunteer/directory" className={({isActive})=>
               isActive ? styles.activeLink : styles.link}>
                 Volunteer Directory
             </NavLink>
+            )}
+
+            {isAdmin && (
+              <NavLink
+                to="/admin/applications"
+                className={({ isActive }) => isActive ? styles.activeLink : styles.link}
+              >
+                Volunteer Applications
+              </NavLink>
+            )}
 
             <NavLink
               to="/userProfile"
