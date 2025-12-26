@@ -2,10 +2,12 @@ import { useEffect, useState, useContext } from "react";
 import VolunteerService from "../../services/VolunteerService";
 import styles from "./VolunteerDirectoryView.module.css";
 import { UserContext } from "../../context/UserContext";
+import axios from "axios";
+
 
 export default function VolunteerDirectory() {
   const { user } = useContext(UserContext);
-
+  const [approvedApps, setApprovedApps] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -13,23 +15,34 @@ export default function VolunteerDirectory() {
   const [editingId, setEditingId] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
 
-  const fetchVolunteers = () => {
+const fetchVolunteers = async () => {
+  try {
     setLoading(true);
-    VolunteerService.getAllVolunteers()
-      .then((res) => {
-        setVolunteers(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Failed to load volunteers.");
-        setLoading(false);
-      });
-  };
+    const volunteersRes = await VolunteerService.getAllVolunteers();
+    let volunteersData = volunteersRes.data;
+    const approvedRes = await VolunteerService.getApprovedApplicationsWithCodes();
+    const approvedAppsData = approvedRes.data;
+    volunteersData = volunteersData.map(v => {
+      const matchedApp = approvedAppsData.find(app => app.email === v.email);
+      return {
+        ...v,
+        inviteCode: matchedApp ? matchedApp.inviteCode : null
+      };
+    });
+    setVolunteers(volunteersData);
+    setLoading(false);
+  } catch (err) {
+    console.error("Failed to fetch volunteers:", err);
+    setError("Failed to load volunteers.");
+    setLoading(false);
+  }
+};
 
-  useEffect(() => {
-    if (user) fetchVolunteers();
-  }, [user]);
+
+
+useEffect(() => {
+  fetchVolunteers();
+}, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,25 +54,26 @@ export default function VolunteerDirectory() {
     setSelectedId(null);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (!user || !editingId) return;
-    VolunteerService.updateVolunteer(editingId, formData)
-      .then(() => {
-        fetchVolunteers();
-        resetForm();
-      })
-      .catch((err) => console.error("Update failed:", err.response || err));
+    try {
+      await VolunteerService.updateVolunteer(editingId, formData);
+      fetchVolunteers();
+      resetForm();
+    } catch (err) {
+      console.error("Update failed:", err.response || err);
+    }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!user || !selectedId) return;
-    if (window.confirm("Are you sure you want to delete this volunteer?")) {
-      VolunteerService.deleteFromVolunteer(selectedId)
-        .then(() => {
-          fetchVolunteers();
-          resetForm();
-        })
-        .catch((err) => console.error("Delete failed:", err.response || err));
+    if (!window.confirm("Are you sure you want to delete this volunteer?")) return;
+    try {
+      await VolunteerService.deleteFromVolunteer(selectedId);
+      fetchVolunteers();
+      resetForm();
+    } catch (err) {
+      console.error("Delete failed:", err.response || err);
     }
   };
 
@@ -111,41 +125,47 @@ export default function VolunteerDirectory() {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-          </tr>
+{user?.authorities?.some(a => a.name === "ROLE_ADMIN") && (
+  <th>Invite Code</th>
+)}          </tr>
         </thead>
         <tbody>
           {volunteers.map((volunteer) => (
-            <tr
-              key={volunteer.volunteerId}
-              className={selectedId === volunteer.volunteerId ? styles.selectedRow : ""}
-              onClick={() => handleSelect(volunteer)}
-            >
-              <td>{volunteer.firstName}</td>
-              <td>{volunteer.lastName}</td>
-              <td>{volunteer.email}</td>
+                <tr
+                key={volunteer.volunteerId}
+                className={selectedId === volunteer.volunteerId ? styles.selectedRow : ""}
+                onClick={() => handleSelect(volunteer)}
+                >
+                 <td>{volunteer.firstName}</td>
+                 <td>{volunteer.lastName}</td>
+                 <td>{volunteer.email}</td>
+                 {user?.authorities?.some(a => a.name === "ROLE_ADMIN") ? (
+                 <td><code>{volunteer.inviteCode || "—"}</code></td>
+                 ) : null}
             </tr>
+
           ))}
         </tbody>
       </table>
 
       <div className={styles.buttonContainer}>
-        {editingId && (
-          <button
+       {user?.authorities?.some(a => a.name === "ROLE_ADMIN") && editingId && (
+        <button
             className={styles.updateButton}
             onClick={handleUpdate}
             disabled={!formData.firstName || !formData.lastName || !formData.email}
-          >
+        >
             Update Volunteer
-          </button>
+        </button>
         )}
 
-        {selectedId && (
-          <button
+        {user?.authorities?.some(a => a.name === "ROLE_ADMIN") && selectedId && (
+        <button
             className={styles.deleteButton}
             onClick={handleDelete}
-          >
+        >
             Delete Volunteer
-          </button>
+        </button>
         )}
 
         {editingId && (

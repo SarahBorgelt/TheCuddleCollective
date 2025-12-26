@@ -8,6 +8,7 @@ public class ShelterApplication {
     private String email;
     private String phoneNumber;
     private String status; //pending, rejected, approved
+    private String inviteCode;
 
     public int getApplicationId() {
         return applicationId;
@@ -55,5 +56,13 @@ public class ShelterApplication {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 }

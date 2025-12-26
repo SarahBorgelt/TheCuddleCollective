@@ -6,3 +6,9 @@
      font-size: 1.8em;
      color: #333;
 }
+
+.accessLevel {
+     font-weight: bold;
+     margin-top: 1rem;
+     font-size: medium;
+}
